@@ -77,6 +77,13 @@
     .gallery img:hover {
         transform: scale(1.06);
     }
+
+    /* Small tweak for mobile */
+    @media (max-width: 768px) {
+        .hero {
+            padding: 60px 20px;
+        }
+    }
 </style>
 
 
@@ -242,16 +249,50 @@
 
 
 <!-- GALLERY -->
-<div class="container py-5">
+<div class="container py-5" id="gallery-section">
     <h2 class="text-center mb-4">College Gallery</h2>
 
-    <div class="row gallery">
-        {% for image in gallery %}
-        <div class="col-md-3 col-6 mb-4">
-            <img src="{{ image.image.url }}" class="img-fluid shadow">
-        </div>
-        {% endfor %}
+    <style>
+        /* Carousel styling */
+        #fast-carousel {
+            max-width: 100%;
+            overflow: hidden;
+        }
+
+        #fast-carousel img {
+            display: block;
+            max-height: 520px;
+            width: auto;
+        }
+
+        .gallery-tab-btn.active {
+            pointer-events: none;
+        }
+    </style>
+
+    <div class="d-flex justify-content-center mb-4">
+        <button class="btn btn-outline-primary me-2 gallery-tab-btn active" id="tab-grid">Gallery Grid</button>
+        <button class="btn btn-outline-primary gallery-tab-btn" id="tab-slideshow">College Gallery</button>
     </div>
+
+    <div id="grid-view">
+        <div class="row gallery">
+            {% for image in gallery %}
+            <div class="col-md-3 col-6 mb-4">
+                <img src="{{ image.image.url }}" class="img-fluid shadow">
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div id="slideshow-view" style="display:none;">
+        <div class="text-center">
+            <div id="fast-carousel" class="shadow rounded d-inline-block">
+                <img id="fast-carousel-img" src="/static/images/cmsn01.jpg" class="img-fluid" alt="College image">
+            </div>
+        </div>
+    </div>
+
 </div>
 
 <!-- RULES SECTION -->
@@ -402,5 +443,77 @@ font-size:22px;
 z-index:999;">
     💬
 </a>
+
+
+
+<!-- Fast slideshow for College Gallery tab -->
+<script>
+    (function () {
+        const count = 12;
+        const pad = n => String(n).padStart(2, '0');
+        const base = '/static/images/cmsn';
+        const exts = ['.jpg', '.jpeg', '.png', '.webp'];
+
+        function detectExt(cb) {
+            let i = 0;
+            const tryExt = () => {
+                if (i >= exts.length) return cb(exts[0]);
+                const img = new Image();
+                img.onload = () => cb(exts[i]);
+                img.onerror = () => { i++; tryExt(); };
+                img.src = base + pad(1) + exts[i];
+            };
+            tryExt();
+        }
+
+        detectExt(function (ext) {
+            const sources = Array.from({ length: count }, (_, i) => base + pad(i + 1) + ext);
+            sources.forEach(s => { const ii = new Image(); ii.src = s; });
+
+            const imgEl = document.getElementById('fast-carousel-img');
+            if (!imgEl) return;
+            imgEl.style.transition = 'opacity .25s ease';
+            let idx = 0;
+            const interval = 1400; // fast slide
+
+            function show() {
+                imgEl.style.opacity = 0;
+                setTimeout(() => {
+                    imgEl.src = sources[idx];
+                    imgEl.style.opacity = 1;
+                    idx = (idx + 1) % sources.length;
+                }, 200);
+            }
+
+            let timer = setInterval(show, interval);
+
+            // Tab buttons
+            const btnGrid = document.getElementById('tab-grid');
+            const btnSlide = document.getElementById('tab-slideshow');
+            const gridView = document.getElementById('grid-view');
+            const slideView = document.getElementById('slideshow-view');
+
+            function setActive(btn) {
+                document.querySelectorAll('.gallery-tab-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            }
+
+            btnSlide.addEventListener('click', () => {
+                gridView.style.display = 'none';
+                slideView.style.display = 'block';
+                setActive(btnSlide);
+                if (!timer) timer = setInterval(show, interval);
+            });
+
+            btnGrid.addEventListener('click', () => {
+                slideView.style.display = 'none';
+                gridView.style.display = 'block';
+                setActive(btnGrid);
+                if (timer) { clearInterval(timer); timer = null; }
+            });
+
+        });
+    })();
+</script>
 
 {% endblock %}
