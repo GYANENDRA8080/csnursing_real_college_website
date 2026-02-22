@@ -1,0 +1,15 @@
+
+{% extends 'college/base.html' %}
+{% block content %}
+<div class="container mt-5">
+<h2>Contact / Enquiry</h2>
+<form method="post">
+{% csrf_token %}
+<input class="form-control mb-2" name="name" placeholder="Your Name" required>
+<input class="form-control mb-2" name="email" placeholder="Email" required>
+<input class="form-control mb-2" name="phone" placeholder="Phone" required>
+<textarea class="form-control mb-2" name="message" placeholder="Message" required></textarea>
+<button class="btn btn-primary">Send Message</button>
+</form>
+</div>
+{% endblock %}

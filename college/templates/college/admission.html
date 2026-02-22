@@ -1,0 +1,16 @@
+
+{% extends 'college/base.html' %}
+{% block content %}
+<div class="container mt-5">
+<h2>Online Admission Form</h2>
+<form method="post" enctype="multipart/form-data">
+{% csrf_token %}
+<input class="form-control mb-2" name="name" placeholder="Full Name" required>
+<input class="form-control mb-2" name="email" placeholder="Email" required>
+<input class="form-control mb-2" name="phone" placeholder="Phone" required>
+<input class="form-control mb-2" name="course" placeholder="Course Applying For" required>
+<input class="form-control mb-2" type="file" name="documents" required>
+<button class="btn btn-primary">Submit Application</button>
+</form>
+</div>
+{% endblock %}

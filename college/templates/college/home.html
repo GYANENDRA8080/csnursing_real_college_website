@@ -1,0 +1,52 @@
+
+{% extends 'college/base.html' %}
+{% block content %}
+
+<div class="bg-primary text-white text-center p-5">
+<h1 class="display-4">Admissions Open 2026-27</h1>
+<p>Quality Nursing & Paramedical Education in Gorakhpur</p>
+<a href="/admission/" class="btn btn-light">Apply Now</a>
+</div>
+
+<div class="container mt-5">
+<h2>Our Courses</h2>
+<div class="row">
+{% for course in courses %}
+<div class="col-md-4 mb-4">
+<div class="card shadow h-100">
+<div class="card-body">
+<h5>{{ course.name }}</h5>
+<p><strong>Duration:</strong> {{ course.duration }}</p>
+<p><strong>Seats:</strong> {{ course.seats }}</p>
+<p><strong>Fees:</strong> {{ course.fees }}</p>
+<p>{{ course.description|truncatewords:20 }}</p>
+</div>
+</div>
+</div>
+{% endfor %}
+</div>
+
+<h2 class="mt-5">Latest Notices</h2>
+<ul class="list-group">
+{% for notice in notices %}
+<li class="list-group-item">
+<strong>{{ notice.title }}</strong>
+{% if notice.file %}
+ - <a href="{{ notice.file.url }}">Download</a>
+{% endif %}
+</li>
+{% endfor %}
+</ul>
+
+<h2 class="mt-5">Gallery</h2>
+<div class="row">
+{% for image in gallery %}
+<div class="col-md-3 mb-3">
+<img src="{{ image.image.url }}" class="img-fluid rounded shadow">
+</div>
+{% endfor %}
+</div>
+
+</div>
+
+{% endblock %}
