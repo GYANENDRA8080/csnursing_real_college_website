@@ -2,165 +2,405 @@
 {% block content %}
 
 <style>
+    /* HERO */
+    .hero {
+        background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+        color: white;
+        padding: 100px 20px;
+        text-align: center;
+    }
 
-/* HERO SECTION */
-.hero{
-    background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
-    color:white;
-    padding:120px 20px;
-    text-align:center;
-}
+    .college-logo {
+        width: 150px;
+        border-radius: 50%;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, .4);
+        margin-bottom: 20px;
+        animation: float 3s ease-in-out infinite;
+    }
 
-.hero h1{
-    font-weight:700;
-}
+    @keyframes float {
 
-.hero-btn{
-    background:linear-gradient(45deg,#00c6ff,#0072ff);
-    border:none;
-    padding:12px 28px;
-    border-radius:30px;
-    color:white;
-    font-weight:600;
-    transition:.3s;
-}
+        0%,
+        100% {
+            transform: translateY(0);
+        }
 
-.hero-btn:hover{
-    transform:scale(1.05);
-    box-shadow:0 5px 20px rgba(0,114,255,0.5);
-}
+        50% {
+            transform: translateY(-10px);
+        }
+    }
 
-/* SECTION TITLE */
-.section-title{
-    font-weight:700;
-    margin-bottom:30px;
-    text-align:center;
-}
+    /* INFO STRIP */
+    .info-strip {
+        background: #0d6efd;
+        color: white;
+        padding: 10px;
+        text-align: center;
+        font-weight: 500;
+    }
 
-/* COURSE CARD */
-.course-card{
-    border:none;
-    border-radius:12px;
-    transition:.3s;
-}
+    /* COUNTER */
+    .counter {
+        font-size: 40px;
+        font-weight: 700;
+        color: #0d6efd;
+    }
 
-.course-card:hover{
-    transform:translateY(-8px);
-    box-shadow:0 10px 30px rgba(0,0,0,0.2);
-}
+    /* FACILITY CARD */
+    .facility {
+        border-radius: 15px;
+        transition: .4s;
+    }
 
-/* NOTICE BOARD */
-.notice-box{
-    border-radius:10px;
-    overflow:hidden;
-}
+    .facility:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, .2);
+    }
 
-.notice-item{
-    transition:.3s;
-}
+    /* CTA */
+    .cta {
+        background: linear-gradient(45deg, #0072ff, #00c6ff);
+        color: white;
+        padding: 60px;
+        text-align: center;
+        border-radius: 15px;
+    }
 
-.notice-item:hover{
-    background:#f5f9ff;
-}
+    /* Gallery */
+    .gallery img {
+        height: 220px;
+        object-fit: cover;
+        border-radius: 12px;
+        transition: .3s;
+    }
 
-/* GALLERY */
-.gallery img{
-    height:220px;
-    object-fit:cover;
-    border-radius:12px;
-    transition:.3s;
-}
-
-.gallery img:hover{
-    transform:scale(1.05);
-}
-
+    .gallery img:hover {
+        transform: scale(1.06);
+    }
 </style>
+
+
+<!-- APPROVAL BAR -->
+<div class="info-strip">
+    Approved by Indian Nursing Council New Delhi |
+    Affiliated to Uttar Pradesh State Medical Faculty Lucknow
+</div>
 
 
 <!-- HERO SECTION -->
 <section class="hero">
-    <h1 class="display-4">Admissions Open 2026-27</h1>
-    <p class="lead">Quality Nursing & Paramedical Education in Gorakhpur</p>
 
-    <a href="/admission/" class="hero-btn mt-3">
-        Apply Now
+    <img src="/static/images/logo.jpeg" class="college-logo">
+
+    <h1>CHANDRAMAULI SWAMINATH NURSING & PARAMEDICAL COLLEGE</h1>
+
+    <p class="lead">
+        N.H.-28, Rudrapur, Kushmi, Gorakhpur
+    </p>
+
+    <a href="/admission/" class="btn btn-light mt-3">
+        Apply Admission 2026-27
     </a>
+
 </section>
 
 
 
+<!-- PRINCIPAL MESSAGE -->
+<div class="container py-5" data-aos="fade-up">
+    <div class="row align-items-center">
+
+        <div class="col-md-6">
+            <img src="/static/images/college.jpeg" class="img-fluid rounded shadow">
+        </div>
+
+        <div class="col-md-6">
+            <h2>Principal's Message</h2>
+            <p>
+                Welcome to Chandramauli Swaminath Nursing & Paramedical College.
+                Our mission is to create skilled healthcare professionals with
+                modern knowledge, ethical values, and clinical excellence.
+            </p>
+        </div>
+
+    </div>
+</div>
+
+
+
+<!-- COUNTER SECTION -->
+<div class="bg-light py-5">
+    <div class="container text-center">
+        <div class="row">
+
+            <div class="col-md-3">
+                <h2 class="counter">200+</h2>
+                <p>Students</p>
+            </div>
+
+            <div class="col-md-3">
+                <h2 class="counter">20+</h2>
+                <p>Faculty Members</p>
+            </div>
+
+            <div class="col-md-3">
+                <h2 class="counter">5+</h2>
+                <p>Courses</p>
+            </div>
+
+            <div class="col-md-3">
+                <h2 class="counter">100%</h2>
+                <p>Training Support</p>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+<!-- FACILITIES -->
 <div class="container py-5">
+    <h2 class="text-center mb-5">Our Facilities</h2>
+
+    <div class="row text-center">
+
+        <div class="col-md-3" data-aos="zoom-in">
+            <div class="card facility p-4">
+                <h5>Modern Labs</h5>
+                <p>Advanced nursing & paramedical laboratories.</p>
+            </div>
+        </div>
+
+        <div class="col-md-3" data-aos="zoom-in">
+            <div class="card facility p-4">
+                <h5>Library</h5>
+                <p>Digital & physical medical resources.</p>
+            </div>
+        </div>
+
+        <div class="col-md-3" data-aos="zoom-in">
+            <div class="card facility p-4">
+                <h5>Clinical Training</h5>
+                <p>Hospital based practical exposure.</p>
+            </div>
+        </div>
+
+        <div class="col-md-3" data-aos="zoom-in">
+            <div class="card facility p-4">
+                <h5>Hostel Facility</h5>
+                <p>Safe & comfortable accommodation.</p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
 
 <!-- COURSES -->
-<h2 class="section-title">Our Courses</h2>
+<div class="container py-5">
+    <h2 class="text-center mb-4">Our Courses</h2>
 
-<div class="row">
-{% for course in courses %}
-<div class="col-md-4 mb-4">
-<div class="card course-card h-100 shadow-sm">
-<div class="card-body">
-
-<h5 class="fw-bold">{{ course.name }}</h5>
-
-<p><strong>Duration:</strong> {{ course.duration }}</p>
-<p><strong>Seats:</strong> {{ course.seats }}</p>
-<p><strong>Fees:</strong> {{ course.fees }}</p>
-
-<p class="text-muted">
-{{ course.description|truncatewords:20 }}
-</p>
-
-<a href="/admission/" class="btn btn-outline-primary btn-sm">
-Apply Course
-</a>
-
-</div>
-</div>
-</div>
-{% endfor %}
+    <div class="row">
+        {% for course in courses %}
+        <div class="col-md-4 mb-4">
+            <div class="card shadow h-100 p-3">
+                <h5>{{ course.name }}</h5>
+                <p>Duration: {{ course.duration }}</p>
+                <p>Seats: {{ course.seats }}</p>
+                <p>Fees: {{ course.fees }}</p>
+                <a href="/admission/" class="btn btn-outline-primary btn-sm">
+                    Apply
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
 </div>
 
 
 
-<!-- NOTICE BOARD -->
-<h2 class="section-title mt-5">Latest Notices</h2>
+<!-- NOTICE -->
+<div class="container py-5">
+    <h2 class="text-center mb-4">Latest Notices</h2>
 
-<div class="card notice-box shadow-sm">
-<ul class="list-group list-group-flush">
+    <ul class="list-group shadow">
+        {% for notice in notices %}
+        <li class="list-group-item d-flex justify-content-between">
+            {{ notice.title }}
 
-{% for notice in notices %}
-<li class="list-group-item notice-item d-flex justify-content-between align-items-center">
+            {% if notice.file %}
+            <a href="{{ notice.file.url }}" class="btn btn-sm btn-primary">Download</a>
+            {% endif %}
 
-<div>
-<strong>{{ notice.title }}</strong>
-</div>
-
-{% if notice.file %}
-<a href="{{ notice.file.url }}" class="btn btn-sm btn-primary">
-Download
-</a>
-{% endif %}
-
-</li>
-{% endfor %}
-
-</ul>
+        </li>
+        {% endfor %}
+    </ul>
 </div>
 
 
 
 <!-- GALLERY -->
-<h2 class="section-title mt-5">College Gallery</h2>
+<div class="container py-5">
+    <h2 class="text-center mb-4">College Gallery</h2>
 
-<div class="row gallery">
-{% for image in gallery %}
-<div class="col-md-3 col-6 mb-4">
-<img src="{{ image.image.url }}" class="img-fluid shadow">
-</div>
-{% endfor %}
+    <div class="row gallery">
+        {% for image in gallery %}
+        <div class="col-md-3 col-6 mb-4">
+            <img src="{{ image.image.url }}" class="img-fluid shadow">
+        </div>
+        {% endfor %}
+    </div>
 </div>
 
+<!-- RULES SECTION -->
+<section class="py-5 bg-light">
+
+    <div class="container">
+
+        <h2 class="text-center fw-bold mb-5">
+            Admission Terms & Conditions
+        </h2>
+
+        <div class="row">
+
+            <div class="col-md-6">
+
+                <h4 class="text-primary">Eligibility Criteria</h4>
+
+                <ul class="list-group shadow-sm mb-4">
+
+                    <li class="list-group-item">
+                        Age limit: Minimum 17 years and Maximum 30 years.
+                    </li>
+
+                    <li class="list-group-item">
+                        Minimum qualification 10+2 with Science (Physics, Chemistry, Biology)
+                        with at least 45% marks.
+                    </li>
+
+                    <li class="list-group-item">
+                        Admission is conducted once every academic year.
+                    </li>
+
+                    <li class="list-group-item">
+                        Candidate must be medically fit.
+                    </li>
+
+                    <li class="list-group-item">
+                        Admission will follow Indian Nursing Council & UP State Medical Faculty rules.
+                    </li>
+
+                </ul>
+
+            </div>
+
+
+            <div class="col-md-6">
+
+                <h4 class="text-primary">Admission Selection Committee</h4>
+
+                <ul class="list-group shadow-sm mb-4">
+
+                    <li class="list-group-item">Chairman / Principal</li>
+                    <li class="list-group-item">Vice Principal</li>
+                    <li class="list-group-item">Senior Tutor</li>
+                    <li class="list-group-item">
+                        Chief Nursing Officer / Nursing Superintendent
+                    </li>
+                    <li class="list-group-item">Administrative Staff</li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="row mt-4">
+
+            <div class="col-md-6">
+
+                <h4 class="text-primary">Training Period</h4>
+
+                <div class="card shadow-sm p-3">
+
+                    <p>
+                        Diploma in General Nursing & Midwifery duration is
+                        <strong>3 Years</strong>.
+                    </p>
+
+                    <p>
+                        A preliminary training period of <strong>12 weeks</strong>
+                        including ward observation and supervised practice
+                        (not exceeding 16 hours duty).
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="col-md-6">
+
+                <h4 class="text-primary">Vacation & Holidays</h4>
+
+                <ul class="list-group shadow-sm">
+
+                    <li class="list-group-item">
+                        Annual Vacation – <strong>30 Days</strong>
+                    </li>
+
+                    <li class="list-group-item">
+                        Sick Leave – <strong>10 Days per year</strong>
+                    </li>
+
+                    <li class="list-group-item">
+                        Preparatory Leave – <strong>7 Days per year</strong>
+                    </li>
+
+                    <li class="list-group-item text-danger">
+                        Sick leave cannot be accumulated year to year.
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ADMISSION CTA -->
+<div class="container py-5">
+    <div class="cta">
+        <h2>Admissions Open 2026-27</h2>
+        <p>Start Your Medical Career With Us</p>
+        <a href="/admission/" class="btn btn-light">
+            Apply Now
+        </a>
+    </div>
 </div>
+
+
+
+<!-- WHATSAPP BUTTON -->
+<a href="https://wa.me/918948274515" style="
+position:fixed;
+bottom:20px;
+right:20px;
+background:#25D366;
+color:white;
+padding:15px;
+border-radius:50%;
+font-size:22px;
+z-index:999;">
+    💬
+</a>
 
 {% endblock %}
