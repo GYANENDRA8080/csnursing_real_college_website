@@ -1,786 +1,1368 @@
 {% extends 'college/base.html' %}
 {% block content %}
 
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
-  :root {
-    --teal:    #0a7c6e;
-    --teal2:   #0d9b8a;
-    --gold:    #c9a84c;
-    --dark:    #0d1f1c;
-    --light:   #f5faf9;
-    --white:   #ffffff;
-    --gray:    #6b7a78;
-    --border:  #d9e8e5;
-    --ff-head: 'Playfair Display', Georgia, serif;
-    --ff-body: 'DM Sans', sans-serif;
-    --radius:  16px;
-    --shadow:  0 8px 40px rgba(10,124,110,.12);
-    --transition: .35s cubic-bezier(.4,0,.2,1);
-  }
+    :root {
+        --teal: #0a7c6e;
+        --teal2: #0d9b8a;
+        --gold: #c9a84c;
+        --dark: #0d1f1c;
+        --light: #f5faf9;
+        --white: #ffffff;
+        --gray: #6b7a78;
+        --border: #d9e8e5;
+        --ff-head: 'Playfair Display', Georgia, serif;
+        --ff-body: 'DM Sans', sans-serif;
+        --radius: 16px;
+        --shadow: 0 8px 40px rgba(10, 124, 110, .12);
+        --transition: .35s cubic-bezier(.4, 0, .2, 1);
+    }
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-  body { font-family: var(--ff-body); background: var(--white); color: var(--dark); overflow-x: hidden; }
+    *,
+    *::before,
+    *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
 
-  /* ── APPROVAL BAR ── */
-  .approval-bar {
-    background: var(--dark);
-    color: rgba(255,255,255,.80);
-    font-size: .78rem;
-    letter-spacing: .05em;
-    text-align: center;
-    padding: 9px 20px;
-    font-weight: 500;
-  }
-  .approval-bar span { color: var(--gold); margin: 0 6px; }
+    html {
+        scroll-behavior: smooth;
+    }
 
-  /* ── NAV-STYLE HEADER (static within template) ── */
-  .site-header {
-    position: sticky;
-    top: 0;
-    z-index: 900;
-    background: rgba(255,255,255,.95);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-    padding: 14px 40px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .site-header .brand {
-    display: flex; align-items: center; gap: 12px; text-decoration: none;
-  }
-  .site-header .brand img { height: 48px; border-radius: 50%; }
-  .site-header .brand-text { font-family: var(--ff-head); font-size: 1rem; color: var(--dark); line-height: 1.2; }
-  .site-header .brand-text small { display:block; font-family: var(--ff-body); font-size: .72rem; color: var(--gray); font-weight:400; }
-  .header-cta {
-    background: var(--teal);
-    color: #fff !important;
-    padding: 10px 26px;
-    border-radius: 50px;
-    font-weight: 600;
-    font-size: .88rem;
-    text-decoration: none;
-    transition: var(--transition);
-    white-space: nowrap;
-  }
-  .header-cta:hover { background: var(--teal2); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(10,124,110,.35); }
+    body {
+        font-family: var(--ff-body);
+        background: var(--white);
+        color: var(--dark);
+        overflow-x: hidden;
+    }
 
-  /* ── HERO ── */
-  .hero {
-    position: relative;
-    min-height: 92vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    background: var(--dark);
-  }
-  .hero-bg {
-    position: absolute; inset: 0;
-    background: 
-      radial-gradient(ellipse 70% 80% at 20% 50%, rgba(10,124,110,.55) 0%, transparent 60%),
-      radial-gradient(ellipse 50% 60% at 80% 20%, rgba(201,168,76,.18) 0%, transparent 50%),
-      linear-gradient(160deg, #0d1f1c 0%, #0a2e28 60%, #041510 100%);
-  }
-  /* subtle grid overlay */
-  .hero-bg::after {
-    content:'';
-    position:absolute; inset:0;
-    background-image: linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
-                      linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
-    background-size: 48px 48px;
-  }
-  .hero-content {
-    position: relative; z-index: 2;
-    text-align: center;
-    padding: 60px 20px;
-    max-width: 860px;
-  }
-  .hero-logo-ring {
-    width: 130px; height: 130px;
-    border-radius: 50%;
-    border: 3px solid var(--gold);
-    padding: 6px;
-    margin: 0 auto 28px;
-    animation: floatY 4s ease-in-out infinite;
-    box-shadow: 0 0 0 12px rgba(201,168,76,.1), 0 20px 60px rgba(0,0,0,.5);
-  }
-  .hero-logo-ring img { width:100%; border-radius:50%; object-fit: cover; }
-  @keyframes floatY { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+    /* ── APPROVAL BAR ── */
+    .approval-bar {
+        background: var(--dark);
+        color: rgba(255, 255, 255, .80);
+        font-size: .78rem;
+        letter-spacing: .05em;
+        text-align: center;
+        padding: 9px 20px;
+        font-weight: 500;
+    }
 
-  .hero-badge {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: rgba(201,168,76,.15);
-    border: 1px solid rgba(201,168,76,.4);
-    color: var(--gold);
-    font-size: .78rem;
-    letter-spacing: .08em;
-    text-transform: uppercase;
-    font-weight: 600;
-    padding: 7px 18px;
-    border-radius: 50px;
-    margin-bottom: 24px;
-  }
-  .hero h1 {
-    font-family: var(--ff-head);
-    font-size: clamp(2rem, 5vw, 3.6rem);
-    font-weight: 900;
-    color: #fff;
-    line-height: 1.15;
-    margin-bottom: 20px;
-  }
-  .hero h1 em { font-style: normal; color: var(--gold); }
-  .hero p.sub {
-    color: rgba(255,255,255,.7);
-    font-size: clamp(.95rem, 2vw, 1.15rem);
-    font-weight: 300;
-    margin-bottom: 36px;
-    line-height: 1.7;
-  }
-  .hero-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
-  .btn-hero-primary {
-    background: var(--gold);
-    color: var(--dark);
-    padding: 15px 36px;
-    border-radius: 50px;
-    font-weight: 700;
-    font-size: 1rem;
-    text-decoration: none;
-    transition: var(--transition);
-    box-shadow: 0 8px 30px rgba(201,168,76,.35);
-  }
-  .btn-hero-primary:hover { transform: translateY(-3px); box-shadow: 0 16px 40px rgba(201,168,76,.45); }
-  .btn-hero-ghost {
-    border: 2px solid rgba(255,255,255,.35);
-    color: #fff;
-    padding: 14px 32px;
-    border-radius: 50px;
-    font-weight: 600;
-    font-size: .95rem;
-    text-decoration: none;
-    transition: var(--transition);
-  }
-  .btn-hero-ghost:hover { border-color: #fff; background: rgba(255,255,255,.08); }
+    .approval-bar span {
+        color: var(--gold);
+        margin: 0 6px;
+    }
 
-  .hero-scroll {
-    position:absolute; bottom:28px; left:50%; transform:translateX(-50%);
-    color:rgba(255,255,255,.5); font-size:.78rem; letter-spacing:.1em; text-transform:uppercase;
-    display:flex; flex-direction:column; align-items:center; gap:8px;
-  }
-  .hero-scroll::after {
-    content:'';
-    width:1px; height:40px;
-    background: linear-gradient(to bottom, rgba(255,255,255,.5), transparent);
-    animation: scrollLine 1.8s ease-in-out infinite;
-  }
-  @keyframes scrollLine { 0%,100%{opacity:1;transform:scaleY(1)} 50%{opacity:.4;transform:scaleY(.6)} }
+    /* Note: header/nav provided by base template; removed local site-header to avoid duplicates */
 
-  /* ── STATS STRIP ── */
-  .stats-strip {
-    background: var(--teal);
-    padding: 40px 20px;
-  }
-  .stats-strip .container { max-width: 1100px; margin: auto; }
-  .stats-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 0; }
-  .stat-item {
-    text-align: center;
-    padding: 10px 20px;
-    border-right: 1px solid rgba(255,255,255,.2);
-    color: #fff;
-  }
-  .stat-item:last-child { border-right: none; }
-  .stat-num {
-    font-family: var(--ff-head);
-    font-size: 2.8rem;
-    font-weight: 700;
-    color: var(--gold);
-    line-height: 1;
-    margin-bottom: 6px;
-  }
-  .stat-label { font-size: .88rem; font-weight: 500; opacity: .85; }
+    /* ── HERO ── */
+    .hero {
+        position: relative;
+        min-height: 92vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        background: var(--dark);
+    }
 
-  /* ── SECTION HEADER ── */
-  .section-head { text-align:center; margin-bottom:56px; }
-  .section-head .eyebrow {
-    display:inline-block;
-    font-size:.75rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase;
-    color: var(--teal);
-    background: rgba(10,124,110,.08);
-    padding: 6px 16px; border-radius:50px;
-    margin-bottom:14px;
-  }
-  .section-head h2 {
-    font-family: var(--ff-head);
-    font-size: clamp(1.8rem, 4vw, 2.8rem);
-    font-weight: 700;
-    color: var(--dark);
-    line-height: 1.2;
-  }
-  .section-head h2 em { font-style:normal; color:var(--teal); }
-  .section-head p { color:var(--gray); font-size:1rem; margin-top:12px; max-width:540px; margin-left:auto; margin-right:auto; }
-  .divider-line { width:60px; height:3px; background:var(--gold); border-radius:2px; margin:18px auto 0; }
+    .hero-bg {
+        position: absolute;
+        inset: 0;
+        background:
+            radial-gradient(ellipse 70% 80% at 20% 50%, rgba(10, 124, 110, .55) 0%, transparent 60%),
+            radial-gradient(ellipse 50% 60% at 80% 20%, rgba(201, 168, 76, .18) 0%, transparent 50%),
+            linear-gradient(160deg, #0d1f1c 0%, #0a2e28 60%, #041510 100%);
+    }
 
-  /* ── PRINCIPAL ── */
-  .principal-sec { padding: 100px 20px; background: var(--light); }
-  .principal-inner { max-width:1100px; margin:auto; display:grid; grid-template-columns:1fr 1fr; gap:70px; align-items:center; }
-  .principal-img-wrap { position:relative; }
-  .principal-img-wrap img {
-    width:100%; border-radius:var(--radius);
-    box-shadow: var(--shadow);
-    object-fit:cover;
-    aspect-ratio: 4/3;
-  }
-  .principal-img-wrap .accent-box {
-    position:absolute; bottom:-24px; right:-24px;
-    background:var(--teal); color:#fff;
-    padding:20px 28px; border-radius:var(--radius);
-    font-family:var(--ff-head); font-size:1.6rem; font-weight:700;
-    box-shadow: var(--shadow);
-  }
-  .principal-img-wrap .accent-box small { display:block; font-family:var(--ff-body); font-size:.78rem; font-weight:400; opacity:.8; margin-top:2px; }
-  .principal-text .eyebrow { font-size:.75rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--teal); margin-bottom:14px; display:block; }
-  .principal-text h2 { font-family:var(--ff-head); font-size:clamp(1.7rem,3.5vw,2.4rem); font-weight:700; margin-bottom:18px; color:var(--dark); }
-  .principal-text p { color:var(--gray); line-height:1.8; margin-bottom:14px; font-size:.97rem; }
-  .principal-sig { font-family:var(--ff-head); font-size:1.5rem; color:var(--teal); margin-top:10px; }
+    /* subtle grid overlay */
+    .hero-bg::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image: linear-gradient(rgba(255, 255, 255, .03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, .03) 1px, transparent 1px);
+        background-size: 48px 48px;
+    }
 
-  /* ── FACILITIES ── */
-  .facilities-sec { padding:100px 20px; background:#fff; }
-  .facilities-sec .container { max-width:1100px; margin:auto; }
-  .fac-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
-  .fac-card {
-    background: var(--light);
-    border-radius: var(--radius);
-    padding: 36px 28px;
-    border: 1px solid var(--border);
-    transition: var(--transition);
-    text-align:center;
-  }
-  .fac-card:hover { transform:translateY(-8px); box-shadow:var(--shadow); border-color: var(--teal); background:#fff; }
-  .fac-icon {
-    width:62px; height:62px;
-    border-radius:50%;
-    background: rgba(10,124,110,.1);
-    color: var(--teal);
-    display:flex; align-items:center; justify-content:center;
-    font-size:1.5rem;
-    margin:0 auto 18px;
-    transition: var(--transition);
-  }
-  .fac-card:hover .fac-icon { background:var(--teal); color:#fff; }
-  .fac-card h5 { font-family:var(--ff-head); font-size:1.1rem; font-weight:700; color:var(--dark); margin-bottom:10px; }
-  .fac-card p { font-size:.88rem; color:var(--gray); line-height:1.6; }
+    .hero-content {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+        padding: 60px 20px;
+        max-width: 860px;
+    }
 
-  /* ── COURSES ── */
-  .courses-sec { padding:100px 20px; background:var(--dark); position:relative; overflow:hidden; }
-  .courses-sec::before {
-    content:''; position:absolute; top:0; left:0; right:0; height:4px;
-    background: linear-gradient(90deg, var(--teal), var(--gold));
-  }
-  .courses-sec .container { max-width:1100px; margin:auto; }
-  .courses-sec .section-head h2 { color:#fff; }
-  .courses-sec .section-head p { color:rgba(255,255,255,.55); }
-  .courses-sec .eyebrow { color:var(--gold)!important; background:rgba(201,168,76,.12)!important; }
-  .course-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
-  .course-card {
-    background: rgba(255,255,255,.05);
-    border: 1px solid rgba(255,255,255,.1);
-    border-radius: var(--radius);
-    padding: 36px 30px;
-    transition: var(--transition);
-  }
-  .course-card:hover { background:rgba(10,124,110,.25); border-color:var(--teal2); transform:translateY(-6px); }
-  .course-tag {
-    display:inline-block;
-    background:rgba(201,168,76,.2); color:var(--gold);
-    font-size:.72rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
-    padding:4px 12px; border-radius:50px; margin-bottom:16px;
-  }
-  .course-card h5 { font-family:var(--ff-head); font-size:1.2rem; color:#fff; margin-bottom:18px; line-height:1.35; }
-  .course-meta { list-style:none; margin-bottom:24px; }
-  .course-meta li {
-    display:flex; align-items:center; gap:10px;
-    font-size:.88rem; color:rgba(255,255,255,.6);
-    padding:8px 0; border-bottom:1px solid rgba(255,255,255,.07);
-  }
-  .course-meta li i { color:var(--teal2); width:16px; }
-  .btn-course {
-    display:block; text-align:center;
-    border:1.5px solid var(--teal2); color:var(--teal2);
-    padding:11px; border-radius:50px; font-weight:600; font-size:.88rem;
-    text-decoration:none; transition:var(--transition);
-  }
-  .btn-course:hover { background:var(--teal2); color:#fff; }
+    .hero-logo-ring {
+        width: 130px;
+        height: 130px;
+        border-radius: 50%;
+        border: 3px solid var(--gold);
+        padding: 6px;
+        margin: 0 auto 28px;
+        animation: floatY 4s ease-in-out infinite;
+        box-shadow: 0 0 0 12px rgba(201, 168, 76, .1), 0 20px 60px rgba(0, 0, 0, .5);
+    }
 
-  /* ── NOTICES ── */
-  .notices-sec { padding:100px 20px; background:var(--light); }
-  .notices-sec .container { max-width:1100px; margin:auto; display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:start; }
-  .notices-list { display:flex; flex-direction:column; gap:12px; }
-  .notice-item {
-    background:#fff; border:1px solid var(--border);
-    border-radius:12px; padding:18px 22px;
-    display:flex; align-items:center; justify-content:space-between; gap:16px;
-    transition:var(--transition);
-  }
-  .notice-item:hover { border-color:var(--teal); box-shadow:0 4px 20px rgba(10,124,110,.1); }
-  .notice-dot { width:10px; height:10px; border-radius:50%; background:var(--teal); flex-shrink:0; }
-  .notice-title { font-size:.92rem; color:var(--dark); font-weight:500; flex:1; }
-  .btn-download {
-    background:var(--teal); color:#fff;
-    padding:7px 18px; border-radius:50px; font-size:.8rem; font-weight:600;
-    text-decoration:none; white-space:nowrap; flex-shrink:0;
-    transition:var(--transition);
-  }
-  .btn-download:hover { background:var(--teal2); }
+    .hero-logo-ring img {
+        width: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+    }
 
-  /* Eligibility card beside notices */
-  .eligibility-card {
-    background:#fff; border-radius:var(--radius); padding:40px;
-    box-shadow:var(--shadow); border-top:4px solid var(--teal);
-  }
-  .eligibility-card h3 { font-family:var(--ff-head); font-size:1.5rem; margin-bottom:20px; color:var(--dark); }
-  .elig-item {
-    display:flex; gap:14px; align-items:flex-start;
-    padding:12px 0; border-bottom:1px solid var(--border);
-  }
-  .elig-item:last-child { border-bottom:none; }
-  .elig-icon { color:var(--teal); margin-top:2px; font-size:1rem; width:18px; flex-shrink:0; }
-  .elig-item p { font-size:.9rem; color:var(--gray); line-height:1.6; }
+    @keyframes floatY {
 
-  /* ── GALLERY ── */
-  .gallery-sec { padding:100px 20px; background:#fff; }
-  .gallery-sec .container { max-width:1100px; margin:auto; }
-  .gallery-tabs { display:flex; gap:12px; justify-content:center; margin-bottom:40px; }
-  .g-tab {
-    padding:10px 28px; border-radius:50px; font-weight:600; font-size:.9rem;
-    border:2px solid var(--border); background:#fff; color:var(--gray); cursor:pointer;
-    transition:var(--transition);
-  }
-  .g-tab.active, .g-tab:hover { border-color:var(--teal); color:var(--teal); background:rgba(10,124,110,.06); }
-  .g-tab.active { pointer-events:none; }
-  .gallery-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
-  .gallery-grid img {
-    width:100%; aspect-ratio:4/3; object-fit:cover;
-    border-radius:12px; transition:var(--transition);
-    cursor:pointer;
-  }
-  .gallery-grid img:hover { transform:scale(1.04); box-shadow:0 12px 32px rgba(0,0,0,.18); }
+        0%,
+        100% {
+            transform: translateY(0)
+        }
 
-  /* Slideshow */
-  .slideshow-wrap { text-align:center; }
-  #fast-carousel {
-    display:inline-block; border-radius:var(--radius);
-    overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,.2);
-    max-width:760px; width:100%;
-  }
-  #fast-carousel img { width:100%; display:block; max-height:480px; object-fit:cover; }
+        50% {
+            transform: translateY(-12px)
+        }
+    }
 
-  /* ── TERMS ── */
-  .terms-sec { padding:100px 20px; background:var(--light); }
-  .terms-sec .container { max-width:1100px; margin:auto; }
-  .terms-grid { display:grid; grid-template-columns:1fr 1fr; gap:40px; margin-top:50px; }
-  .terms-card {
-    background:#fff; border-radius:var(--radius); padding:36px;
-    border:1px solid var(--border); box-shadow:0 2px 16px rgba(0,0,0,.05);
-  }
-  .terms-card h4 { font-family:var(--ff-head); font-size:1.25rem; color:var(--teal); margin-bottom:20px; display:flex; align-items:center; gap:10px; }
-  .terms-list { list-style:none; }
-  .terms-list li {
-    padding:10px 0; border-bottom:1px solid var(--border);
-    font-size:.9rem; color:var(--gray); display:flex; align-items:flex-start; gap:10px; line-height:1.6;
-  }
-  .terms-list li:last-child { border-bottom:none; }
-  .terms-list li::before { content:'✦'; color:var(--gold); font-size:.65rem; margin-top:5px; flex-shrink:0; }
-  .leave-pill {
-    display:flex; justify-content:space-between; align-items:center;
-    background:rgba(10,124,110,.06); padding:12px 16px; border-radius:10px; margin-bottom:10px;
-  }
-  .leave-pill span { font-size:.9rem; color:var(--dark); font-weight:500; }
-  .leave-pill strong { color:var(--teal); font-size:.95rem; }
+    .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(201, 168, 76, .15);
+        border: 1px solid rgba(201, 168, 76, .4);
+        color: var(--gold);
+        font-size: .78rem;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+        font-weight: 600;
+        padding: 7px 18px;
+        border-radius: 50px;
+        margin-bottom: 24px;
+    }
 
-  /* ── CTA BANNER ── */
-  .cta-sec { padding:100px 20px; background:var(--dark); position:relative; overflow:hidden; }
-  .cta-sec::before {
-    content:''; position:absolute;
-    width:700px; height:700px; border-radius:50%;
-    background:radial-gradient(circle, rgba(10,124,110,.35) 0%, transparent 70%);
-    top:-200px; right:-200px; pointer-events:none;
-  }
-  .cta-inner { max-width:760px; margin:auto; text-align:center; position:relative; z-index:1; }
-  .cta-badge {
-    display:inline-block; background:rgba(201,168,76,.15); border:1px solid rgba(201,168,76,.4);
-    color:var(--gold); font-size:.78rem; letter-spacing:.12em; text-transform:uppercase;
-    font-weight:700; padding:7px 20px; border-radius:50px; margin-bottom:24px;
-  }
-  .cta-inner h2 { font-family:var(--ff-head); font-size:clamp(2rem,5vw,3.2rem); color:#fff; margin-bottom:16px; }
-  .cta-inner p { color:rgba(255,255,255,.6); font-size:1.05rem; margin-bottom:36px; }
-  .btn-cta {
-    background:linear-gradient(135deg, var(--gold), #e8c055);
-    color:var(--dark); padding:16px 48px; border-radius:50px;
-    font-weight:700; font-size:1rem; text-decoration:none;
-    display:inline-block; transition:var(--transition);
-    box-shadow:0 8px 32px rgba(201,168,76,.4);
-  }
-  .btn-cta:hover { transform:translateY(-3px); box-shadow:0 16px 48px rgba(201,168,76,.55); }
+    .hero h1 {
+        font-family: var(--ff-head);
+        font-size: clamp(2rem, 5vw, 3.6rem);
+        font-weight: 900;
+        color: #fff;
+        line-height: 1.15;
+        margin-bottom: 20px;
+    }
 
-  /* ── WHATSAPP ── */
-  .wa-btn {
-    position:fixed; bottom:28px; right:28px; z-index:999;
-    width:58px; height:58px; border-radius:50%;
-    background:#25D366; color:#fff;
-    display:flex; align-items:center; justify-content:center;
-    font-size:1.6rem; text-decoration:none;
-    box-shadow:0 8px 32px rgba(37,211,102,.45);
-    transition:var(--transition);
-    animation: waPulse 2.5s ease-in-out infinite;
-  }
-  .wa-btn:hover { transform:scale(1.1); box-shadow:0 12px 40px rgba(37,211,102,.6); }
-  @keyframes waPulse {
-    0%,100%{box-shadow:0 8px 32px rgba(37,211,102,.45),0 0 0 0 rgba(37,211,102,.3)}
-    50%{box-shadow:0 8px 32px rgba(37,211,102,.45),0 0 0 12px rgba(37,211,102,0)}
-  }
+    .hero h1 em {
+        font-style: normal;
+        color: var(--gold);
+    }
 
-  /* ── MOBILE ── */
-  @media(max-width:900px){
-    .principal-inner,
-    .notices-sec .container,
-    .terms-grid { grid-template-columns:1fr; gap:40px; }
-    .fac-grid { grid-template-columns:1fr 1fr; }
-    .course-grid { grid-template-columns:1fr; }
-    .stats-grid { grid-template-columns:1fr 1fr; gap:20px; }
-    .stat-item { border-right:none; border-bottom:1px solid rgba(255,255,255,.2); padding:16px; }
-    .stat-item:nth-child(odd){ border-right:1px solid rgba(255,255,255,.2); }
-    .gallery-grid { grid-template-columns:1fr 1fr; }
-    .site-header { padding:12px 20px; }
-    .site-header .brand-text { display:none; }
-    .principal-img-wrap .accent-box { display:none; }
-  }
-  @media(max-width:540px){
-    .fac-grid { grid-template-columns:1fr; }
-    .gallery-grid { grid-template-columns:1fr 1fr; }
-    .stats-grid { grid-template-columns:1fr 1fr; }
-  }
+    .hero p.sub {
+        color: rgba(255, 255, 255, .7);
+        font-size: clamp(.95rem, 2vw, 1.15rem);
+        font-weight: 300;
+        margin-bottom: 36px;
+        line-height: 1.7;
+    }
+
+    .hero-btns {
+        display: flex;
+        gap: 14px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .btn-hero-primary {
+        background: var(--gold);
+        color: var(--dark);
+        padding: 15px 36px;
+        border-radius: 50px;
+        font-weight: 700;
+        font-size: 1rem;
+        text-decoration: none;
+        transition: var(--transition);
+        box-shadow: 0 8px 30px rgba(201, 168, 76, .35);
+    }
+
+    .btn-hero-primary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 16px 40px rgba(201, 168, 76, .45);
+    }
+
+    .btn-hero-ghost {
+        border: 2px solid rgba(255, 255, 255, .35);
+        color: #fff;
+        padding: 14px 32px;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: .95rem;
+        text-decoration: none;
+        transition: var(--transition);
+    }
+
+    .btn-hero-ghost:hover {
+        border-color: #fff;
+        background: rgba(255, 255, 255, .08);
+    }
+
+    .hero-scroll {
+        position: absolute;
+        bottom: 28px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: rgba(255, 255, 255, .5);
+        font-size: .78rem;
+        letter-spacing: .1em;
+        text-transform: uppercase;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .hero-scroll::after {
+        content: '';
+        width: 1px;
+        height: 40px;
+        background: linear-gradient(to bottom, rgba(255, 255, 255, .5), transparent);
+        animation: scrollLine 1.8s ease-in-out infinite;
+    }
+
+    @keyframes scrollLine {
+
+        0%,
+        100% {
+            opacity: 1;
+            transform: scaleY(1)
+        }
+
+        50% {
+            opacity: .4;
+            transform: scaleY(.6)
+        }
+    }
+
+    /* ── STATS STRIP ── */
+    .stats-strip {
+        background: var(--teal);
+        padding: 40px 20px;
+    }
+
+    .stats-strip .container {
+        max-width: 1100px;
+        margin: auto;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0;
+    }
+
+    .stat-item {
+        text-align: center;
+        padding: 10px 20px;
+        border-right: 1px solid rgba(255, 255, 255, .2);
+        color: #fff;
+    }
+
+    .stat-item:last-child {
+        border-right: none;
+    }
+
+    .stat-num {
+        font-family: var(--ff-head);
+        font-size: 2.8rem;
+        font-weight: 700;
+        color: var(--gold);
+        line-height: 1;
+        margin-bottom: 6px;
+    }
+
+    .stat-label {
+        font-size: .88rem;
+        font-weight: 500;
+        opacity: .85;
+    }
+
+    /* ── SECTION HEADER ── */
+    .section-head {
+        text-align: center;
+        margin-bottom: 56px;
+    }
+
+    .section-head .eyebrow {
+        display: inline-block;
+        font-size: .75rem;
+        font-weight: 700;
+        letter-spacing: .14em;
+        text-transform: uppercase;
+        color: var(--teal);
+        background: rgba(10, 124, 110, .08);
+        padding: 6px 16px;
+        border-radius: 50px;
+        margin-bottom: 14px;
+    }
+
+    .section-head h2 {
+        font-family: var(--ff-head);
+        font-size: clamp(1.8rem, 4vw, 2.8rem);
+        font-weight: 700;
+        color: var(--dark);
+        line-height: 1.2;
+    }
+
+    .section-head h2 em {
+        font-style: normal;
+        color: var(--teal);
+    }
+
+    .section-head p {
+        color: var(--gray);
+        font-size: 1rem;
+        margin-top: 12px;
+        max-width: 540px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .divider-line {
+        width: 60px;
+        height: 3px;
+        background: var(--gold);
+        border-radius: 2px;
+        margin: 18px auto 0;
+    }
+
+    /* ── PRINCIPAL ── */
+    .principal-sec {
+        padding: 100px 20px;
+        background: var(--light);
+    }
+
+    .principal-inner {
+        max-width: 1100px;
+        margin: auto;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 70px;
+        align-items: center;
+    }
+
+    .principal-img-wrap {
+        position: relative;
+    }
+
+    .principal-img-wrap img {
+        width: 100%;
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        object-fit: cover;
+        aspect-ratio: 4/3;
+    }
+
+    .principal-img-wrap .accent-box {
+        position: absolute;
+        bottom: -24px;
+        right: -24px;
+        background: var(--teal);
+        color: #fff;
+        padding: 20px 28px;
+        border-radius: var(--radius);
+        font-family: var(--ff-head);
+        font-size: 1.6rem;
+        font-weight: 700;
+        box-shadow: var(--shadow);
+    }
+
+    .principal-img-wrap .accent-box small {
+        display: block;
+        font-family: var(--ff-body);
+        font-size: .78rem;
+        font-weight: 400;
+        opacity: .8;
+        margin-top: 2px;
+    }
+
+    .principal-text .eyebrow {
+        font-size: .75rem;
+        font-weight: 700;
+        letter-spacing: .14em;
+        text-transform: uppercase;
+        color: var(--teal);
+        margin-bottom: 14px;
+        display: block;
+    }
+
+    .principal-text h2 {
+        font-family: var(--ff-head);
+        font-size: clamp(1.7rem, 3.5vw, 2.4rem);
+        font-weight: 700;
+        margin-bottom: 18px;
+        color: var(--dark);
+    }
+
+    .principal-text p {
+        color: var(--gray);
+        line-height: 1.8;
+        margin-bottom: 14px;
+        font-size: .97rem;
+    }
+
+    .principal-sig {
+        font-family: var(--ff-head);
+        font-size: 1.5rem;
+        color: var(--teal);
+        margin-top: 10px;
+    }
+
+    /* ── FACILITIES ── */
+    .facilities-sec {
+        padding: 100px 20px;
+        background: #fff;
+    }
+
+    .facilities-sec .container {
+        max-width: 1100px;
+        margin: auto;
+    }
+
+    .fac-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 24px;
+    }
+
+    .fac-card {
+        background: var(--light);
+        border-radius: var(--radius);
+        padding: 36px 28px;
+        border: 1px solid var(--border);
+        transition: var(--transition);
+        text-align: center;
+    }
+
+    .fac-card:hover {
+        transform: translateY(-8px);
+        box-shadow: var(--shadow);
+        border-color: var(--teal);
+        background: #fff;
+    }
+
+    .fac-icon {
+        width: 62px;
+        height: 62px;
+        border-radius: 50%;
+        background: rgba(10, 124, 110, .1);
+        color: var(--teal);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        margin: 0 auto 18px;
+        transition: var(--transition);
+    }
+
+    .fac-card:hover .fac-icon {
+        background: var(--teal);
+        color: #fff;
+    }
+
+    .fac-card h5 {
+        font-family: var(--ff-head);
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--dark);
+        margin-bottom: 10px;
+    }
+
+    .fac-card p {
+        font-size: .88rem;
+        color: var(--gray);
+        line-height: 1.6;
+    }
+
+    /* ── COURSES ── */
+    .courses-sec {
+        padding: 100px 20px;
+        background: var(--dark);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .courses-sec::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--teal), var(--gold));
+    }
+
+    .courses-sec .container {
+        max-width: 1100px;
+        margin: auto;
+    }
+
+    .courses-sec .section-head h2 {
+        color: #fff;
+    }
+
+    .courses-sec .section-head p {
+        color: rgba(255, 255, 255, .55);
+    }
+
+    .courses-sec .eyebrow {
+        color: var(--gold) !important;
+        background: rgba(201, 168, 76, .12) !important;
+    }
+
+    .course-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+    }
+
+    .course-card {
+        background: rgba(255, 255, 255, .05);
+        border: 1px solid rgba(255, 255, 255, .1);
+        border-radius: var(--radius);
+        padding: 36px 30px;
+        transition: var(--transition);
+    }
+
+    .course-card:hover {
+        background: rgba(10, 124, 110, .25);
+        border-color: var(--teal2);
+        transform: translateY(-6px);
+    }
+
+    .course-tag {
+        display: inline-block;
+        background: rgba(201, 168, 76, .2);
+        color: var(--gold);
+        font-size: .72rem;
+        font-weight: 700;
+        letter-spacing: .1em;
+        text-transform: uppercase;
+        padding: 4px 12px;
+        border-radius: 50px;
+        margin-bottom: 16px;
+    }
+
+    .course-card h5 {
+        font-family: var(--ff-head);
+        font-size: 1.2rem;
+        color: #fff;
+        margin-bottom: 18px;
+        line-height: 1.35;
+    }
+
+    .course-meta {
+        list-style: none;
+        margin-bottom: 24px;
+    }
+
+    .course-meta li {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: .88rem;
+        color: rgba(255, 255, 255, .6);
+        padding: 8px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, .07);
+    }
+
+    .course-meta li i {
+        color: var(--teal2);
+        width: 16px;
+    }
+
+    .btn-course {
+        display: block;
+        text-align: center;
+        border: 1.5px solid var(--teal2);
+        color: var(--teal2);
+        padding: 11px;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: .88rem;
+        text-decoration: none;
+        transition: var(--transition);
+    }
+
+    .btn-course:hover {
+        background: var(--teal2);
+        color: #fff;
+    }
+
+    /* ── NOTICES ── */
+    .notices-sec {
+        padding: 100px 20px;
+        background: var(--light);
+    }
+
+    .notices-sec .container {
+        max-width: 1100px;
+        margin: auto;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 60px;
+        align-items: start;
+    }
+
+    .notices-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .notice-item {
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 18px 22px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        transition: var(--transition);
+    }
+
+    .notice-item:hover {
+        border-color: var(--teal);
+        box-shadow: 0 4px 20px rgba(10, 124, 110, .1);
+    }
+
+    .notice-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--teal);
+        flex-shrink: 0;
+    }
+
+    .notice-title {
+        font-size: .92rem;
+        color: var(--dark);
+        font-weight: 500;
+        flex: 1;
+    }
+
+    .btn-download {
+        background: var(--teal);
+        color: #fff;
+        padding: 7px 18px;
+        border-radius: 50px;
+        font-size: .8rem;
+        font-weight: 600;
+        text-decoration: none;
+        white-space: nowrap;
+        flex-shrink: 0;
+        transition: var(--transition);
+    }
+
+    .btn-download:hover {
+        background: var(--teal2);
+    }
+
+    /* Eligibility card beside notices */
+    .eligibility-card {
+        background: #fff;
+        border-radius: var(--radius);
+        padding: 40px;
+        box-shadow: var(--shadow);
+        border-top: 4px solid var(--teal);
+    }
+
+    .eligibility-card h3 {
+        font-family: var(--ff-head);
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+        color: var(--dark);
+    }
+
+    .elig-item {
+        display: flex;
+        gap: 14px;
+        align-items: flex-start;
+        padding: 12px 0;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .elig-item:last-child {
+        border-bottom: none;
+    }
+
+    .elig-icon {
+        color: var(--teal);
+        margin-top: 2px;
+        font-size: 1rem;
+        width: 18px;
+        flex-shrink: 0;
+    }
+
+    .elig-item p {
+        font-size: .9rem;
+        color: var(--gray);
+        line-height: 1.6;
+    }
+
+    /* ── GALLERY ── */
+    .gallery-sec {
+        padding: 100px 20px;
+        background: #fff;
+    }
+
+    .gallery-sec .container {
+        max-width: 1100px;
+        margin: auto;
+    }
+
+    .gallery-tabs {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+        margin-bottom: 40px;
+    }
+
+    .g-tab {
+        padding: 10px 28px;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: .9rem;
+        border: 2px solid var(--border);
+        background: #fff;
+        color: var(--gray);
+        cursor: pointer;
+        transition: var(--transition);
+    }
+
+    .g-tab.active,
+    .g-tab:hover {
+        border-color: var(--teal);
+        color: var(--teal);
+        background: rgba(10, 124, 110, .06);
+    }
+
+    .g-tab.active {
+        pointer-events: none;
+    }
+
+    .gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+    }
+
+    .gallery-grid img {
+        width: 100%;
+        aspect-ratio: 4/3;
+        object-fit: cover;
+        border-radius: 12px;
+        transition: var(--transition);
+        cursor: pointer;
+    }
+
+    .gallery-grid img:hover {
+        transform: scale(1.04);
+        box-shadow: 0 12px 32px rgba(0, 0, 0, .18);
+    }
+
+    /* Slideshow */
+    .slideshow-wrap {
+        text-align: center;
+    }
+
+    #fast-carousel {
+        display: inline-block;
+        border-radius: var(--radius);
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, .2);
+        max-width: 760px;
+        width: 100%;
+    }
+
+    #fast-carousel img {
+        width: 100%;
+        display: block;
+        max-height: 480px;
+        object-fit: cover;
+    }
+
+    /* ── TERMS ── */
+    .terms-sec {
+        padding: 100px 20px;
+        background: var(--light);
+    }
+
+    .terms-sec .container {
+        max-width: 1100px;
+        margin: auto;
+    }
+
+    .terms-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+        margin-top: 50px;
+    }
+
+    .terms-card {
+        background: #fff;
+        border-radius: var(--radius);
+        padding: 36px;
+        border: 1px solid var(--border);
+        box-shadow: 0 2px 16px rgba(0, 0, 0, .05);
+    }
+
+    .terms-card h4 {
+        font-family: var(--ff-head);
+        font-size: 1.25rem;
+        color: var(--teal);
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .terms-list {
+        list-style: none;
+    }
+
+    .terms-list li {
+        padding: 10px 0;
+        border-bottom: 1px solid var(--border);
+        font-size: .9rem;
+        color: var(--gray);
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        line-height: 1.6;
+    }
+
+    .terms-list li:last-child {
+        border-bottom: none;
+    }
+
+    .terms-list li::before {
+        content: '✦';
+        color: var(--gold);
+        font-size: .65rem;
+        margin-top: 5px;
+        flex-shrink: 0;
+    }
+
+    .leave-pill {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: rgba(10, 124, 110, .06);
+        padding: 12px 16px;
+        border-radius: 10px;
+        margin-bottom: 10px;
+    }
+
+    .leave-pill span {
+        font-size: .9rem;
+        color: var(--dark);
+        font-weight: 500;
+    }
+
+    .leave-pill strong {
+        color: var(--teal);
+        font-size: .95rem;
+    }
+
+    /* ── CTA BANNER ── */
+    .cta-sec {
+        padding: 100px 20px;
+        background: var(--dark);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .cta-sec::before {
+        content: '';
+        position: absolute;
+        width: 700px;
+        height: 700px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(10, 124, 110, .35) 0%, transparent 70%);
+        top: -200px;
+        right: -200px;
+        pointer-events: none;
+    }
+
+    .cta-inner {
+        max-width: 760px;
+        margin: auto;
+        text-align: center;
+        position: relative;
+        z-index: 1;
+    }
+
+    .cta-badge {
+        display: inline-block;
+        background: rgba(201, 168, 76, .15);
+        border: 1px solid rgba(201, 168, 76, .4);
+        color: var(--gold);
+        font-size: .78rem;
+        letter-spacing: .12em;
+        text-transform: uppercase;
+        font-weight: 700;
+        padding: 7px 20px;
+        border-radius: 50px;
+        margin-bottom: 24px;
+    }
+
+    .cta-inner h2 {
+        font-family: var(--ff-head);
+        font-size: clamp(2rem, 5vw, 3.2rem);
+        color: #fff;
+        margin-bottom: 16px;
+    }
+
+    .cta-inner p {
+        color: rgba(255, 255, 255, .6);
+        font-size: 1.05rem;
+        margin-bottom: 36px;
+    }
+
+    .btn-cta {
+        background: linear-gradient(135deg, var(--gold), #e8c055);
+        color: var(--dark);
+        padding: 16px 48px;
+        border-radius: 50px;
+        font-weight: 700;
+        font-size: 1rem;
+        text-decoration: none;
+        display: inline-block;
+        transition: var(--transition);
+        box-shadow: 0 8px 32px rgba(201, 168, 76, .4);
+    }
+
+    .btn-cta:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 16px 48px rgba(201, 168, 76, .55);
+    }
+
+    /* ── WHATSAPP ── */
+    .wa-btn {
+        position: fixed;
+        bottom: 28px;
+        right: 28px;
+        z-index: 999;
+        width: 58px;
+        height: 58px;
+        border-radius: 50%;
+        background: #25D366;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.6rem;
+        text-decoration: none;
+        box-shadow: 0 8px 32px rgba(37, 211, 102, .45);
+        transition: var(--transition);
+        animation: waPulse 2.5s ease-in-out infinite;
+    }
+
+    .wa-btn:hover {
+        transform: scale(1.1);
+        box-shadow: 0 12px 40px rgba(37, 211, 102, .6);
+    }
+
+    @keyframes waPulse {
+
+        0%,
+        100% {
+            box-shadow: 0 8px 32px rgba(37, 211, 102, .45), 0 0 0 0 rgba(37, 211, 102, .3)
+        }
+
+        50% {
+            box-shadow: 0 8px 32px rgba(37, 211, 102, .45), 0 0 0 12px rgba(37, 211, 102, 0)
+        }
+    }
+
+    /* ── MOBILE ── */
+    @media(max-width:900px) {
+
+        .principal-inner,
+        .notices-sec .container,
+        .terms-grid {
+            grid-template-columns: 1fr;
+            gap: 40px;
+        }
+
+        .fac-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .course-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .stats-grid {
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .stat-item {
+            border-right: none;
+            border-bottom: 1px solid rgba(255, 255, 255, .2);
+            padding: 16px;
+        }
+
+        .stat-item:nth-child(odd) {
+            border-right: 1px solid rgba(255, 255, 255, .2);
+        }
+
+        .gallery-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .site-header {
+            padding: 12px 20px;
+        }
+
+        .site-header .brand-text {
+            display: none;
+        }
+
+        .principal-img-wrap .accent-box {
+            display: none;
+        }
+    }
+
+    @media(max-width:540px) {
+        .fac-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .gallery-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .stats-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
 </style>
 
-<!-- APPROVAL BAR -->
-<div class="approval-bar">
-  Approved by <span>Indian Nursing Council, New Delhi</span> &nbsp;|&nbsp; Affiliated to <span>UP State Medical Faculty, Lucknow</span>
-</div>
-
-<!-- STICKY HEADER -->
-<header class="site-header">
-  <a href="/" class="brand">
-    <img src="/static/images/logo.jpeg" alt="CMSN Logo">
-    <div class="brand-text">
-      CMSN College
-      <small>Nursing &amp; Paramedical</small>
-    </div>
-  </a>
-  <a href="/admission/" class="header-cta">Apply 2026‑27</a>
-</header>
+<!-- Page content uses base navbar; hero follows below -->
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-content">
-    <div class="hero-logo-ring">
-      <img src="/static/images/logo.jpeg" alt="College Logo">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+        <div class="hero-logo-ring">
+            <img src="/static/images/logo.jpeg" alt="College Logo">
+        </div>
+        <div class="hero-badge"><i class="fas fa-shield-halved"></i> INC Approved Institution</div>
+        <h1>Chandramauli Swaminath<br><em>Nursing &amp; Paramedical College</em></h1>
+        <p class="sub">N.H.‑28, Rudrapur, Kushmi, Gorakhpur &nbsp;·&nbsp; Shaping tomorrow's healthcare heroes through
+            excellence in education &amp; clinical training.</p>
+        <div class="hero-btns">
+            <a href="/admission/" class="btn-hero-primary">Apply for Admission</a>
+            <a href="#courses" class="btn-hero-ghost">Explore Courses</a>
+        </div>
     </div>
-    <div class="hero-badge"><i class="fas fa-shield-halved"></i> INC Approved Institution</div>
-    <h1>Chandramauli Swaminath<br><em>Nursing &amp; Paramedical College</em></h1>
-    <p class="sub">N.H.‑28, Rudrapur, Kushmi, Gorakhpur &nbsp;·&nbsp; Shaping tomorrow's healthcare heroes through excellence in education &amp; clinical training.</p>
-    <div class="hero-btns">
-      <a href="/admission/" class="btn-hero-primary">Apply for Admission</a>
-      <a href="#courses" class="btn-hero-ghost">Explore Courses</a>
-    </div>
-  </div>
-  <div class="hero-scroll">Scroll</div>
+    <div class="hero-scroll">Scroll</div>
 </section>
 
 <!-- STATS STRIP -->
 <div class="stats-strip">
-  <div class="container">
-    <div class="stats-grid">
-      <div class="stat-item">
-        <div class="stat-num">200+</div>
-        <div class="stat-label">Enrolled Students</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-num">20+</div>
-        <div class="stat-label">Expert Faculty</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-num">5+</div>
-        <div class="stat-label">Programmes</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-num">100%</div>
-        <div class="stat-label">Clinical Training</div>
-      </div>
+    <div class="container">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-num">200+</div>
+                <div class="stat-label">Enrolled Students</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-num">20+</div>
+                <div class="stat-label">Expert Faculty</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-num">5+</div>
+                <div class="stat-label">Programmes</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-num">100%</div>
+                <div class="stat-label">Clinical Training</div>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 <!-- PRINCIPAL MESSAGE -->
 <section class="principal-sec">
-  <div class="principal-inner">
-    <div class="principal-img-wrap">
-      <img src="/static/images/college.jpeg" alt="College">
-      <div class="accent-box">
-        Est. <strong>2000+</strong>
-        <small>Years of Excellence</small>
-      </div>
+    <div class="principal-inner">
+        <div class="principal-img-wrap">
+            <img src="/static/images/college.jpeg" alt="College">
+            <div class="accent-box">
+                Est. <strong>2000+</strong>
+                <small>Years of Excellence</small>
+            </div>
+        </div>
+        <div class="principal-text">
+            <span class="eyebrow"><i class="fas fa-quote-left"></i> &nbsp;Message from Principal</span>
+            <h2>Nurturing Compassionate Healthcare Professionals</h2>
+            <p>Welcome to Chandramauli Swaminath Nursing &amp; Paramedical College. Our mission is to create skilled
+                healthcare professionals equipped with modern knowledge, ethical values, and clinical excellence.</p>
+            <p>We believe in holistic education that combines rigorous academic training with hands-on clinical
+                exposure, preparing our students to serve communities with dedication and compassion.</p>
+            <div class="principal-sig">— The Principal</div>
+        </div>
     </div>
-    <div class="principal-text">
-      <span class="eyebrow"><i class="fas fa-quote-left"></i> &nbsp;Message from Principal</span>
-      <h2>Nurturing Compassionate Healthcare Professionals</h2>
-      <p>Welcome to Chandramauli Swaminath Nursing &amp; Paramedical College. Our mission is to create skilled healthcare professionals equipped with modern knowledge, ethical values, and clinical excellence.</p>
-      <p>We believe in holistic education that combines rigorous academic training with hands-on clinical exposure, preparing our students to serve communities with dedication and compassion.</p>
-      <div class="principal-sig">— The Principal</div>
-    </div>
-  </div>
 </section>
 
 <!-- FACILITIES -->
 <section class="facilities-sec">
-  <div class="container">
-    <div class="section-head">
-      <span class="eyebrow">What We Offer</span>
-      <h2>World-Class <em>Facilities</em></h2>
-      <p>Everything students need to learn, grow, and excel in healthcare.</p>
-      <div class="divider-line"></div>
+    <div class="container">
+        <div class="section-head">
+            <span class="eyebrow">What We Offer</span>
+            <h2>World-Class <em>Facilities</em></h2>
+            <p>Everything students need to learn, grow, and excel in healthcare.</p>
+            <div class="divider-line"></div>
+        </div>
+        <div class="fac-grid">
+            <div class="fac-card">
+                <div class="fac-icon"><i class="fas fa-flask"></i></div>
+                <h5>Modern Labs</h5>
+                <p>Advanced nursing &amp; paramedical laboratories with latest equipment.</p>
+            </div>
+            <div class="fac-card">
+                <div class="fac-icon"><i class="fas fa-book-open"></i></div>
+                <h5>Library</h5>
+                <p>Extensive digital &amp; physical medical resources for deep learning.</p>
+            </div>
+            <div class="fac-card">
+                <div class="fac-icon"><i class="fas fa-hospital"></i></div>
+                <h5>Clinical Training</h5>
+                <p>Real-world hospital-based practical exposure &amp; supervised practice.</p>
+            </div>
+            <div class="fac-card">
+                <div class="fac-icon"><i class="fas fa-house"></i></div>
+                <h5>Hostel Facility</h5>
+                <p>Safe, comfortable, and secure accommodation for outstation students.</p>
+            </div>
+        </div>
     </div>
-    <div class="fac-grid">
-      <div class="fac-card">
-        <div class="fac-icon"><i class="fas fa-flask"></i></div>
-        <h5>Modern Labs</h5>
-        <p>Advanced nursing &amp; paramedical laboratories with latest equipment.</p>
-      </div>
-      <div class="fac-card">
-        <div class="fac-icon"><i class="fas fa-book-open"></i></div>
-        <h5>Library</h5>
-        <p>Extensive digital &amp; physical medical resources for deep learning.</p>
-      </div>
-      <div class="fac-card">
-        <div class="fac-icon"><i class="fas fa-hospital"></i></div>
-        <h5>Clinical Training</h5>
-        <p>Real-world hospital-based practical exposure &amp; supervised practice.</p>
-      </div>
-      <div class="fac-card">
-        <div class="fac-icon"><i class="fas fa-house"></i></div>
-        <h5>Hostel Facility</h5>
-        <p>Safe, comfortable, and secure accommodation for outstation students.</p>
-      </div>
-    </div>
-  </div>
 </section>
 
 <!-- COURSES -->
 <section class="courses-sec" id="courses">
-  <div class="container">
-    <div class="section-head">
-      <span class="eyebrow" style="color:var(--gold)!important;background:rgba(201,168,76,.12)!important;">Our Programmes</span>
-      <h2 style="color:#fff;">Courses Designed for <em style="color:var(--gold);">Real Healthcare Careers</em></h2>
-      <p style="color:rgba(255,255,255,.55);">Choose from our INC-approved nursing &amp; paramedical programmes.</p>
-      <div class="divider-line"></div>
+    <div class="container">
+        <div class="section-head">
+            <span class="eyebrow" style="color:var(--gold)!important;background:rgba(201,168,76,.12)!important;">Our
+                Programmes</span>
+            <h2 style="color:#fff;">Courses Designed for <em style="color:var(--gold);">Real Healthcare Careers</em>
+            </h2>
+            <p style="color:rgba(255,255,255,.55);">Choose from our INC-approved nursing &amp; paramedical programmes.
+            </p>
+            <div class="divider-line"></div>
+        </div>
+        <div class="course-grid">
+            {% for course in courses %}
+            <div class="course-card">
+                <span class="course-tag">Approved</span>
+                <h5>{{ course.name }}</h5>
+                <ul class="course-meta">
+                    <li><i class="fas fa-clock"></i> Duration: {{ course.duration }}</li>
+                    <li><i class="fas fa-users"></i> Seats: {{ course.seats }}</li>
+                    <li><i class="fas fa-indian-rupee-sign"></i> Fees: {{ course.fees }}</li>
+                </ul>
+                <a href="/admission/" class="btn-course">Apply Now</a>
+            </div>
+            {% endfor %}
+        </div>
     </div>
-    <div class="course-grid">
-      {% for course in courses %}
-      <div class="course-card">
-        <span class="course-tag">Approved</span>
-        <h5>{{ course.name }}</h5>
-        <ul class="course-meta">
-          <li><i class="fas fa-clock"></i> Duration: {{ course.duration }}</li>
-          <li><i class="fas fa-users"></i> Seats: {{ course.seats }}</li>
-          <li><i class="fas fa-indian-rupee-sign"></i> Fees: {{ course.fees }}</li>
-        </ul>
-        <a href="/admission/" class="btn-course">Apply Now</a>
-      </div>
-      {% endfor %}
-    </div>
-  </div>
 </section>
 
 <!-- NOTICES + ELIGIBILITY -->
 <section class="notices-sec">
-  <div class="container">
-    <div>
-      <div class="section-head" style="text-align:left;margin-bottom:32px;">
-        <span class="eyebrow">Updates</span>
-        <h2>Latest <em>Notices</em></h2>
-        <div class="divider-line" style="margin-left:0;"></div>
-      </div>
-      <div class="notices-list">
-        {% for notice in notices %}
-        <div class="notice-item">
-          <div class="notice-dot"></div>
-          <span class="notice-title">{{ notice.title }}</span>
-          {% if notice.file %}
-          <a href="{{ notice.file.url }}" class="btn-download"><i class="fas fa-download"></i> Download</a>
-          {% endif %}
+    <div class="container">
+        <div>
+            <div class="section-head" style="text-align:left;margin-bottom:32px;">
+                <span class="eyebrow">Updates</span>
+                <h2>Latest <em>Notices</em></h2>
+                <div class="divider-line" style="margin-left:0;"></div>
+            </div>
+            <div class="notices-list">
+                {% for notice in notices %}
+                <div class="notice-item">
+                    <div class="notice-dot"></div>
+                    <span class="notice-title">{{ notice.title }}</span>
+                    {% if notice.file %}
+                    <a href="{{ notice.file.url }}" class="btn-download"><i class="fas fa-download"></i> Download</a>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
         </div>
-        {% endfor %}
-      </div>
+        <div class="eligibility-card">
+            <h3><i class="fas fa-clipboard-check" style="color:var(--teal);margin-right:10px;"></i>Eligibility Criteria
+            </h3>
+            <div class="elig-item">
+                <i class="fas fa-circle-check elig-icon"></i>
+                <p>Age limit: Minimum <strong>17 years</strong> and Maximum <strong>30 years</strong></p>
+            </div>
+            <div class="elig-item">
+                <i class="fas fa-circle-check elig-icon"></i>
+                <p>10+2 with Science (PCB) with at least <strong>45% marks</strong></p>
+            </div>
+            <div class="elig-item">
+                <i class="fas fa-circle-check elig-icon"></i>
+                <p>Admission conducted once every academic year</p>
+            </div>
+            <div class="elig-item">
+                <i class="fas fa-circle-check elig-icon"></i>
+                <p>Candidate must be <strong>medically fit</strong></p>
+            </div>
+            <div class="elig-item">
+                <i class="fas fa-circle-check elig-icon"></i>
+                <p>As per INC &amp; UP State Medical Faculty regulations</p>
+            </div>
+        </div>
     </div>
-    <div class="eligibility-card">
-      <h3><i class="fas fa-clipboard-check" style="color:var(--teal);margin-right:10px;"></i>Eligibility Criteria</h3>
-      <div class="elig-item">
-        <i class="fas fa-circle-check elig-icon"></i>
-        <p>Age limit: Minimum <strong>17 years</strong> and Maximum <strong>30 years</strong></p>
-      </div>
-      <div class="elig-item">
-        <i class="fas fa-circle-check elig-icon"></i>
-        <p>10+2 with Science (PCB) with at least <strong>45% marks</strong></p>
-      </div>
-      <div class="elig-item">
-        <i class="fas fa-circle-check elig-icon"></i>
-        <p>Admission conducted once every academic year</p>
-      </div>
-      <div class="elig-item">
-        <i class="fas fa-circle-check elig-icon"></i>
-        <p>Candidate must be <strong>medically fit</strong></p>
-      </div>
-      <div class="elig-item">
-        <i class="fas fa-circle-check elig-icon"></i>
-        <p>As per INC &amp; UP State Medical Faculty regulations</p>
-      </div>
-    </div>
-  </div>
 </section>
 
 <!-- GALLERY -->
 <section class="gallery-sec" id="gallery-section">
-  <div class="container">
-    <div class="section-head">
-      <span class="eyebrow">Life at CMSN</span>
-      <h2>College <em>Gallery</em></h2>
-      <div class="divider-line"></div>
+    <div class="container">
+        <div class="section-head">
+            <span class="eyebrow">Life at CMSN</span>
+            <h2>College <em>Gallery</em></h2>
+            <div class="divider-line"></div>
+        </div>
+        <div class="gallery-tabs">
+            <button class="g-tab active" id="tab-grid">Photo Grid</button>
+            <button class="g-tab" id="tab-slideshow">Slideshow</button>
+        </div>
+        <div id="grid-view">
+            <div class="gallery-grid">
+                {% for image in gallery %}
+                <img src="{{ image.image.url }}" alt="Gallery Image">
+                {% endfor %}
+            </div>
+        </div>
+        <div id="slideshow-view" style="display:none;" class="slideshow-wrap">
+            <div id="fast-carousel">
+                <img id="fast-carousel-img" src="/static/images/cmsn01.jpg" alt="College">
+            </div>
+        </div>
     </div>
-    <div class="gallery-tabs">
-      <button class="g-tab active" id="tab-grid">Photo Grid</button>
-      <button class="g-tab" id="tab-slideshow">Slideshow</button>
-    </div>
-    <div id="grid-view">
-      <div class="gallery-grid">
-        {% for image in gallery %}
-        <img src="{{ image.image.url }}" alt="Gallery Image">
-        {% endfor %}
-      </div>
-    </div>
-    <div id="slideshow-view" style="display:none;" class="slideshow-wrap">
-      <div id="fast-carousel">
-        <img id="fast-carousel-img" src="/static/images/cmsn01.jpg" alt="College">
-      </div>
-    </div>
-  </div>
 </section>
 
 <!-- TERMS -->
 <section class="terms-sec">
-  <div class="container">
-    <div class="section-head">
-      <span class="eyebrow">Admission Guidelines</span>
-      <h2>Terms &amp; <em>Conditions</em></h2>
-      <div class="divider-line"></div>
+    <div class="container">
+        <div class="section-head">
+            <span class="eyebrow">Admission Guidelines</span>
+            <h2>Terms &amp; <em>Conditions</em></h2>
+            <div class="divider-line"></div>
+        </div>
+        <div class="terms-grid">
+            <div class="terms-card">
+                <h4><i class="fas fa-users-gear"></i> Selection Committee</h4>
+                <ul class="terms-list">
+                    <li>Chairman / Principal</li>
+                    <li>Vice Principal</li>
+                    <li>Senior Tutor</li>
+                    <li>Chief Nursing Officer / Nursing Superintendent</li>
+                    <li>Administrative Staff</li>
+                </ul>
+            </div>
+            <div class="terms-card">
+                <h4><i class="fas fa-calendar-days"></i> Vacation &amp; Leave</h4>
+                <div class="leave-pill"><span>Annual Vacation</span><strong>30 Days</strong></div>
+                <div class="leave-pill"><span>Sick Leave</span><strong>10 Days / yr</strong></div>
+                <div class="leave-pill"><span>Preparatory Leave</span><strong>7 Days / yr</strong></div>
+                <p style="font-size:.82rem;color:var(--gray);margin-top:12px;"><i class="fas fa-triangle-exclamation"
+                        style="color:#e05c5c;margin-right:6px;"></i>Sick leave cannot be accumulated year to year.</p>
+            </div>
+            <div class="terms-card" style="grid-column:1/-1;">
+                <h4><i class="fas fa-stethoscope"></i> Training Period</h4>
+                <p style="color:var(--gray);font-size:.95rem;line-height:1.8;">
+                    Diploma in General Nursing &amp; Midwifery duration is <strong>3 Years</strong>. A preliminary
+                    training period of <strong>12 weeks</strong> includes ward observation and supervised practice not
+                    exceeding 16 hours duty per week, followed by full clinical posting across various hospital
+                    departments.
+                </p>
+            </div>
+        </div>
     </div>
-    <div class="terms-grid">
-      <div class="terms-card">
-        <h4><i class="fas fa-users-gear"></i> Selection Committee</h4>
-        <ul class="terms-list">
-          <li>Chairman / Principal</li>
-          <li>Vice Principal</li>
-          <li>Senior Tutor</li>
-          <li>Chief Nursing Officer / Nursing Superintendent</li>
-          <li>Administrative Staff</li>
-        </ul>
-      </div>
-      <div class="terms-card">
-        <h4><i class="fas fa-calendar-days"></i> Vacation &amp; Leave</h4>
-        <div class="leave-pill"><span>Annual Vacation</span><strong>30 Days</strong></div>
-        <div class="leave-pill"><span>Sick Leave</span><strong>10 Days / yr</strong></div>
-        <div class="leave-pill"><span>Preparatory Leave</span><strong>7 Days / yr</strong></div>
-        <p style="font-size:.82rem;color:var(--gray);margin-top:12px;"><i class="fas fa-triangle-exclamation" style="color:#e05c5c;margin-right:6px;"></i>Sick leave cannot be accumulated year to year.</p>
-      </div>
-      <div class="terms-card" style="grid-column:1/-1;">
-        <h4><i class="fas fa-stethoscope"></i> Training Period</h4>
-        <p style="color:var(--gray);font-size:.95rem;line-height:1.8;">
-          Diploma in General Nursing &amp; Midwifery duration is <strong>3 Years</strong>. A preliminary training period of <strong>12 weeks</strong> includes ward observation and supervised practice not exceeding 16 hours duty per week, followed by full clinical posting across various hospital departments.
-        </p>
-      </div>
-    </div>
-  </div>
 </section>
 
 <!-- CTA -->
 <section class="cta-sec">
-  <div class="cta-inner">
-    <div class="cta-badge"><i class="fas fa-star"></i> &nbsp;Admissions Open</div>
-    <h2>Begin Your Healthcare Journey — 2026‑27</h2>
-    <p>Join hundreds of students building careers in nursing &amp; paramedical sciences under expert guidance.</p>
-    <a href="/admission/" class="btn-cta">Apply for Admission Now</a>
-  </div>
+    <div class="cta-inner">
+        <div class="cta-badge"><i class="fas fa-star"></i> &nbsp;Admissions Open</div>
+        <h2>Begin Your Healthcare Journey — 2026‑27</h2>
+        <p>Join hundreds of students building careers in nursing &amp; paramedical sciences under expert guidance.</p>
+        <a href="/admission/" class="btn-cta">Apply for Admission Now</a>
+    </div>
 </section>
 
 <!-- WHATSAPP -->
 <a href="https://wa.me/918948274515" class="wa-btn" title="Chat on WhatsApp">
-  <i class="fab fa-whatsapp"></i>
+    <i class="fab fa-whatsapp"></i>
 </a>
 
 <!-- SLIDESHOW SCRIPT -->
 <script>
-(function () {
-  const count = 12, base = '/static/images/cmsn', exts = ['.jpg','.jpeg','.png','.webp'];
-  const pad = n => String(n).padStart(2,'0');
+    (function () {
+        const count = 12, base = '/static/images/cmsn', exts = ['.jpg', '.jpeg', '.png', '.webp'];
+        const pad = n => String(n).padStart(2, '0');
 
-  function detectExt(cb){
-    let i=0;
-    const tryExt=()=>{
-      if(i>=exts.length)return cb(exts[0]);
-      const img=new Image();
-      img.onload=()=>cb(exts[i]);
-      img.onerror=()=>{i++;tryExt();};
-      img.src=base+pad(1)+exts[i];
-    };tryExt();
-  }
+        function detectExt(cb) {
+            let i = 0;
+            const tryExt = () => {
+                if (i >= exts.length) return cb(exts[0]);
+                const img = new Image();
+                img.onload = () => cb(exts[i]);
+                img.onerror = () => { i++; tryExt(); };
+                img.src = base + pad(1) + exts[i];
+            }; tryExt();
+        }
 
-  detectExt(function(ext){
-    const sources=Array.from({length:count},(_,i)=>base+pad(i+1)+ext);
-    sources.forEach(s=>{const ii=new Image();ii.src=s;});
-    const imgEl=document.getElementById('fast-carousel-img');
-    if(!imgEl)return;
-    imgEl.style.transition='opacity .25s ease';
-    let idx=0;
-    const interval=1400;
-    function show(){
-      imgEl.style.opacity=0;
-      setTimeout(()=>{imgEl.src=sources[idx];imgEl.style.opacity=1;idx=(idx+1)%sources.length;},220);
-    }
-    let timer=setInterval(show,interval);
+        detectExt(function (ext) {
+            const sources = Array.from({ length: count }, (_, i) => base + pad(i + 1) + ext);
+            sources.forEach(s => { const ii = new Image(); ii.src = s; });
+            const imgEl = document.getElementById('fast-carousel-img');
+            if (!imgEl) return;
+            imgEl.style.transition = 'opacity .25s ease';
+            let idx = 0;
+            const interval = 1400;
+            function show() {
+                imgEl.style.opacity = 0;
+                setTimeout(() => { imgEl.src = sources[idx]; imgEl.style.opacity = 1; idx = (idx + 1) % sources.length; }, 220);
+            }
+            let timer = setInterval(show, interval);
 
-    const btnGrid=document.getElementById('tab-grid');
-    const btnSlide=document.getElementById('tab-slideshow');
-    const gridView=document.getElementById('grid-view');
-    const slideView=document.getElementById('slideshow-view');
+            const btnGrid = document.getElementById('tab-grid');
+            const btnSlide = document.getElementById('tab-slideshow');
+            const gridView = document.getElementById('grid-view');
+            const slideView = document.getElementById('slideshow-view');
 
-    function setActive(btn){
-      document.querySelectorAll('.g-tab').forEach(b=>b.classList.remove('active'));
-      btn.classList.add('active');
-    }
-    btnSlide.addEventListener('click',()=>{
-      gridView.style.display='none';slideView.style.display='block';
-      setActive(btnSlide);
-      if(!timer)timer=setInterval(show,interval);
-    });
-    btnGrid.addEventListener('click',()=>{
-      slideView.style.display='none';gridView.style.display='block';
-      setActive(btnGrid);
-      if(timer){clearInterval(timer);timer=null;}
-    });
-  });
-})();
+            function setActive(btn) {
+                document.querySelectorAll('.g-tab').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            }
+            btnSlide.addEventListener('click', () => {
+                gridView.style.display = 'none'; slideView.style.display = 'block';
+                setActive(btnSlide);
+                if (!timer) timer = setInterval(show, interval);
+            });
+            btnGrid.addEventListener('click', () => {
+                slideView.style.display = 'none'; gridView.style.display = 'block';
+                setActive(btnGrid);
+                if (timer) { clearInterval(timer); timer = null; }
+            });
+        });
+    })();
 </script>
 
 {% endblock %}
