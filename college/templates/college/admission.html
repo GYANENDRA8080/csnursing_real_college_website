@@ -1,96 +1,1498 @@
-{% extends 'college/base.html' %}
-{% block content %}
+<!DOCTYPE html>
+<html lang="en">
 
-<style>
-/* Background Gradient */
-body{
-    background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
-}
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>C.M.S.N. Nursing & Paramedical College — Admission Form</title>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap"
+            rel="stylesheet">
+        <style>
+            :root {
+                --crimson: #9b1a2f;
+                --crimson-dark: #6b0f1f;
+                --crimson-light: #c0394e;
+                --gold: #c9964a;
+                --gold-light: #e8b96a;
+                --cream: #fdf6ee;
+                --cream-dark: #f0e4d4;
+                --ink: #1a0a0f;
+                --ink-light: #4a2030;
+                --white: #fff;
+                --shadow: 0 4px 32px rgba(155, 26, 47, 0.13);
+            }
 
-/* Card Design */
-.admission-card{
-    background: rgba(255,255,255,0.08);
-    backdrop-filter: blur(15px);
-    border-radius:15px;
-    padding:40px;
-    box-shadow:0 8px 30px rgba(0,0,0,0.3);
-    color:white;
-}
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
 
-/* Heading */
-.form-title{
-    font-weight:700;
-    text-align:center;
-    margin-bottom:25px;
-}
+            body {
+                font-family: 'DM Sans', sans-serif;
+                background: var(--cream);
+                color: var(--ink);
+                min-height: 100vh;
+            }
 
-/* Input Style */
-.form-control{
-    background:rgba(255,255,255,0.1);
-    border:none;
-    color:white;
-    padding:12px;
-    border-radius:8px;
-}
+            /* ─── HEADER ─── */
+            .header {
+                background: var(--crimson-dark);
+                color: white;
+                padding: 28px 40px 22px;
+                text-align: center;
+                position: relative;
+                overflow: hidden;
+            }
 
-.form-control::placeholder{
-    color:#ddd;
-}
+            .header::before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background: repeating-linear-gradient(45deg, transparent, transparent 18px, rgba(255, 255, 255, .03) 18px, rgba(255, 255, 255, .03) 20px);
+            }
 
-/* Focus Effect */
-.form-control:focus{
-    background:rgba(255,255,255,0.15);
-    box-shadow:none;
-    border:1px solid #00d4ff;
-    color:white;
-}
+            .header-logo {
+                font-family: 'Playfair Display', serif;
+                font-size: 2rem;
+                font-weight: 900;
+                letter-spacing: 1px;
+                line-height: 1.1;
+            }
 
-/* Button Style */
-.btn-admission{
-    background:linear-gradient(45deg,#00c6ff,#0072ff);
-    border:none;
-    padding:12px;
-    font-weight:600;
-    border-radius:8px;
-    transition:.3s;
-}
+            .header-logo span {
+                color: var(--gold-light);
+            }
 
-.btn-admission:hover{
-    transform:scale(1.05);
-    box-shadow:0 5px 20px rgba(0,114,255,0.5);
-}
-</style>
+            .header-sub {
+                margin-top: 6px;
+                font-size: .78rem;
+                letter-spacing: 2.5px;
+                text-transform: uppercase;
+                opacity: .75;
+                font-weight: 300;
+            }
 
-<div class="container d-flex justify-content-center align-items-center" style="min-height:90vh;">
+            .header-badge {
+                display: inline-block;
+                margin-top: 12px;
+                background: var(--gold);
+                color: var(--ink);
+                font-size: .7rem;
+                font-weight: 600;
+                letter-spacing: 2px;
+                text-transform: uppercase;
+                padding: 5px 18px;
+                border-radius: 20px;
+            }
 
-    <div class="col-md-7">
-        <div class="admission-card">
+            /* ─── TABS ─── */
+            .tabs-bar {
+                display: flex;
+                background: var(--crimson);
+                border-bottom: 3px solid var(--gold);
+                overflow-x: auto;
+            }
 
-            <h2 class="form-title">🎓 Online Admission Form</h2>
+            .tab-btn {
+                flex: 1;
+                min-width: 150px;
+                padding: 14px 20px;
+                background: none;
+                border: none;
+                color: rgba(255, 255, 255, .65);
+                font-family: 'DM Sans', sans-serif;
+                font-size: .82rem;
+                font-weight: 500;
+                letter-spacing: 1px;
+                text-transform: uppercase;
+                cursor: pointer;
+                transition: all .25s;
+                position: relative;
+            }
 
-            <form method="post" enctype="multipart/form-data">
-                {% csrf_token %}
+            .tab-btn::after {
+                content: '';
+                position: absolute;
+                bottom: -3px;
+                left: 50%;
+                right: 50%;
+                height: 3px;
+                background: var(--gold-light);
+                transition: all .25s;
+            }
 
-                <input class="form-control mb-3" name="name" placeholder="Full Name" required>
+            .tab-btn.active {
+                color: white;
+                background: rgba(255, 255, 255, .07);
+            }
 
-                <input class="form-control mb-3" type="email" name="email" placeholder="Email Address" required>
+            .tab-btn.active::after {
+                left: 0;
+                right: 0;
+            }
 
-                <input class="form-control mb-3" name="phone" placeholder="Phone Number" required>
+            .tab-btn:hover {
+                color: white;
+                background: rgba(255, 255, 255, .05);
+            }
 
-                <input class="form-control mb-3" name="course" placeholder="Course Applying For" required>
+            /* ─── LAYOUT ─── */
+            .container {
+                max-width: 900px;
+                margin: 0 auto;
+                padding: 36px 20px 60px;
+            }
 
-                <label class="mb-2">Upload Documents</label>
-                <input class="form-control mb-4" type="file" name="documents" required>
+            /* ─── TAB PANELS ─── */
+            .tab-panel {
+                display: none;
+            }
 
-                <button class="btn btn-admission w-100">
-                    Submit Application
-                </button>
+            .tab-panel.active {
+                display: block;
+            }
 
-            </form>
+            /* ─── SECTION CARD ─── */
+            .section-card {
+                background: white;
+                border-radius: 14px;
+                box-shadow: var(--shadow);
+                margin-bottom: 24px;
+                overflow: hidden;
+            }
+
+            .section-head {
+                background: linear-gradient(90deg, var(--crimson-dark), var(--crimson-light));
+                color: white;
+                padding: 12px 24px;
+                font-family: 'Playfair Display', serif;
+                font-size: 1rem;
+                font-weight: 700;
+                letter-spacing: .5px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .section-head .icon {
+                font-size: 1.1rem;
+            }
+
+            .section-body {
+                padding: 24px;
+            }
+
+            /* ─── FORM GRID ─── */
+            .grid-2 {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 18px;
+            }
+
+            .grid-3 {
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr;
+                gap: 18px;
+            }
+
+            .grid-4 {
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr 1fr;
+                gap: 18px;
+            }
+
+            .col-span-2 {
+                grid-column: span 2;
+            }
+
+            .col-span-3 {
+                grid-column: span 3;
+            }
+
+            .col-span-4 {
+                grid-column: span 4;
+            }
+
+            /* ─── FIELD ─── */
+            .field {
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+            }
+
+            .field label {
+                font-size: .72rem;
+                font-weight: 600;
+                letter-spacing: 1.2px;
+                text-transform: uppercase;
+                color: var(--crimson-dark);
+            }
+
+            .field input,
+            .field select,
+            .field textarea {
+                width: 100%;
+                padding: 10px 14px;
+                border: 1.5px solid var(--cream-dark);
+                border-radius: 8px;
+                font-family: 'DM Sans', sans-serif;
+                font-size: .9rem;
+                color: var(--ink);
+                background: var(--cream);
+                transition: border-color .2s, box-shadow .2s;
+                outline: none;
+            }
+
+            .field input:focus,
+            .field select:focus,
+            .field textarea:focus {
+                border-color: var(--crimson-light);
+                box-shadow: 0 0 0 3px rgba(155, 26, 47, .1);
+                background: white;
+            }
+
+            .field textarea {
+                resize: vertical;
+                min-height: 72px;
+            }
+
+            /* ─── PHOTO UPLOAD ─── */
+            .photo-upload-zone {
+                border: 2px dashed var(--gold);
+                border-radius: 12px;
+                background: #fffbf5;
+                padding: 28px 16px;
+                text-align: center;
+                cursor: pointer;
+                transition: background .2s;
+                position: relative;
+            }
+
+            .photo-upload-zone:hover {
+                background: #fff5e6;
+            }
+
+            .photo-upload-zone input[type=file] {
+                position: absolute;
+                inset: 0;
+                opacity: 0;
+                cursor: pointer;
+                width: 100%;
+                height: 100%;
+            }
+
+            .photo-upload-zone .upload-icon {
+                font-size: 2rem;
+                margin-bottom: 8px;
+            }
+
+            .photo-upload-zone p {
+                font-size: .8rem;
+                color: var(--ink-light);
+                font-weight: 500;
+            }
+
+            .photo-upload-zone span {
+                font-size: .72rem;
+                color: #999;
+            }
+
+            /* ─── RADIO / CHECKBOX GROUP ─── */
+            .radio-group,
+            .check-group {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 12px;
+                padding: 6px 0;
+            }
+
+            .radio-opt,
+            .check-opt {
+                display: flex;
+                align-items: center;
+                gap: 7px;
+                cursor: pointer;
+                font-size: .88rem;
+            }
+
+            .radio-opt input,
+            .check-opt input {
+                width: 17px;
+                height: 17px;
+                accent-color: var(--crimson);
+                cursor: pointer;
+            }
+
+            /* ─── TABLE QUALIFICATIONS ─── */
+            .qual-table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+            .qual-table th {
+                background: var(--crimson-dark);
+                color: white;
+                font-size: .72rem;
+                letter-spacing: 1px;
+                text-transform: uppercase;
+                padding: 10px 14px;
+                text-align: left;
+            }
+
+            .qual-table td {
+                padding: 0;
+                border-bottom: 1px solid #f0e4d4;
+            }
+
+            .qual-table td input {
+                width: 100%;
+                padding: 10px 14px;
+                border: none;
+                background: transparent;
+                font-family: 'DM Sans', sans-serif;
+                font-size: .9rem;
+                color: var(--ink);
+                outline: none;
+                transition: background .15s;
+            }
+
+            .qual-table td input:focus {
+                background: #fff8f0;
+            }
+
+            .qual-table tr:hover td {
+                background: #fffaf5;
+            }
+
+            .qual-table .row-num {
+                width: 40px;
+                color: var(--crimson-dark);
+                font-weight: 600;
+                text-align: center;
+                font-size: .82rem;
+                padding: 10px;
+                background: #fdf6ee;
+            }
+
+            /* ─── RULES BOX ─── */
+            .rules-box {
+                background: linear-gradient(135deg, #fff8f5, #fff3ec);
+                border: 1.5px solid var(--gold);
+                border-radius: 12px;
+                padding: 20px 24px;
+                margin-top: 16px;
+            }
+
+            .rules-box h4 {
+                font-family: 'Playfair Display', serif;
+                color: var(--crimson-dark);
+                font-size: 1rem;
+                margin-bottom: 12px;
+            }
+
+            .rules-list {
+                list-style: none;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+
+            .rules-list li {
+                font-size: .82rem;
+                color: var(--ink-light);
+                padding-left: 18px;
+                position: relative;
+                line-height: 1.5;
+            }
+
+            .rules-list li::before {
+                content: '✦';
+                position: absolute;
+                left: 0;
+                color: var(--gold);
+                font-size: .65rem;
+                top: 3px;
+            }
+
+            /* ─── DECLARATION ─── */
+            .declaration-box {
+                background: #fdf6ee;
+                border-left: 4px solid var(--gold);
+                border-radius: 0 10px 10px 0;
+                padding: 18px 22px;
+                font-size: .87rem;
+                color: var(--ink-light);
+                line-height: 1.7;
+                margin-bottom: 20px;
+            }
+
+            .sig-row {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 32px;
+                margin-top: 20px;
+            }
+
+            .sig-field {
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+                align-items: center;
+            }
+
+            .sig-field label {
+                font-size: .72rem;
+                font-weight: 600;
+                letter-spacing: 1px;
+                text-transform: uppercase;
+                color: var(--crimson-dark);
+            }
+
+            .sig-line {
+                width: 100%;
+                height: 60px;
+                border: 1.5px dashed var(--cream-dark);
+                border-radius: 8px;
+                background: white;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: .75rem;
+                color: #bbb;
+            }
+
+            /* ─── ADMIT CARD SPECIAL ─── */
+            .admit-card-preview {
+                background: white;
+                border: 3px solid var(--crimson-dark);
+                border-radius: 14px;
+                overflow: hidden;
+                box-shadow: 0 8px 32px rgba(155, 26, 47, .18);
+            }
+
+            .admit-card-header {
+                background: var(--crimson-dark);
+                color: white;
+                padding: 16px 24px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .admit-card-header-title {
+                font-family: 'Playfair Display', serif;
+                font-size: 1.1rem;
+            }
+
+            .admit-card-header-sub {
+                font-size: .72rem;
+                opacity: .7;
+                margin-top: 2px;
+            }
+
+            .photo-box {
+                width: 90px;
+                height: 110px;
+                border: 2px solid var(--gold);
+                border-radius: 6px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: rgba(255, 255, 255, .1);
+                font-size: .65rem;
+                color: rgba(255, 255, 255, .5);
+                text-align: center;
+                cursor: pointer;
+                position: relative;
+                overflow: hidden;
+                flex-shrink: 0;
+            }
+
+            .photo-box input[type=file] {
+                position: absolute;
+                inset: 0;
+                opacity: 0;
+                cursor: pointer;
+            }
+
+            .admit-card-body {
+                padding: 24px;
+            }
+
+            .admit-card-divider {
+                width: 100%;
+                height: 1.5px;
+                background: linear-gradient(90deg, var(--crimson-dark), var(--gold), var(--crimson-dark));
+                margin: 18px 0;
+            }
+
+            .course-options {
+                display: flex;
+                gap: 24px;
+                margin-top: 10px;
+            }
+
+            .course-opt {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                border: 2px solid var(--cream-dark);
+                border-radius: 10px;
+                padding: 14px 22px;
+                cursor: pointer;
+                transition: all .2s;
+                flex: 1;
+                justify-content: center;
+            }
+
+            .course-opt input[type=radio] {
+                accent-color: var(--crimson);
+                width: 18px;
+                height: 18px;
+            }
+
+            .course-opt:has(input:checked) {
+                border-color: var(--crimson);
+                background: #fff5f7;
+            }
+
+            .course-opt-label {
+                font-weight: 600;
+                font-size: .95rem;
+                color: var(--ink);
+            }
+
+            .course-opt-sub {
+                font-size: .72rem;
+                color: #888;
+            }
+
+            /* ─── SUBMIT BUTTON ─── */
+            .submit-section {
+                text-align: center;
+                margin-top: 10px;
+                padding-top: 10px;
+            }
+
+            .btn-submit {
+                background: linear-gradient(135deg, var(--crimson-dark), var(--crimson-light));
+                color: white;
+                border: none;
+                padding: 15px 52px;
+                border-radius: 50px;
+                font-family: 'DM Sans', sans-serif;
+                font-size: 1rem;
+                font-weight: 600;
+                letter-spacing: 1px;
+                text-transform: uppercase;
+                cursor: pointer;
+                transition: transform .2s, box-shadow .2s;
+                box-shadow: 0 6px 24px rgba(155, 26, 47, .35);
+            }
+
+            .btn-submit:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 12px 32px rgba(155, 26, 47, .45);
+            }
+
+            .btn-submit:active {
+                transform: translateY(0);
+            }
+
+            /* ─── PROGRESS INDICATOR ─── */
+            .progress-bar {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                margin-bottom: 30px;
+                flex-wrap: wrap;
+            }
+
+            .progress-step {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .step-dot {
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                background: var(--cream-dark);
+                color: var(--ink-light);
+                font-weight: 700;
+                font-size: .82rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: all .25s;
+                border: 2px solid transparent;
+            }
+
+            .step-dot.active {
+                background: var(--crimson);
+                color: white;
+                border-color: var(--crimson-dark);
+                box-shadow: 0 0 0 4px rgba(155, 26, 47, .15);
+            }
+
+            .step-dot.done {
+                background: var(--gold);
+                color: white;
+            }
+
+            .step-label {
+                font-size: .72rem;
+                font-weight: 600;
+                color: var(--ink-light);
+                letter-spacing: .5px;
+            }
+
+            .step-connector {
+                width: 28px;
+                height: 2px;
+                background: var(--cream-dark);
+            }
+
+            .step-connector.done {
+                background: var(--gold);
+            }
+
+            /* ─── ADDRESS BLOCK ─── */
+            .address-block {
+                margin-bottom: 6px;
+            }
+
+            /* ─── OFFICE USE SECTION ─── */
+            .office-section {
+                background: #f9f9fb;
+                border: 2px dashed #ddd;
+                border-radius: 12px;
+                padding: 22px 24px;
+                margin-top: 6px;
+            }
+
+            .office-section h4 {
+                font-size: .72rem;
+                letter-spacing: 2px;
+                text-transform: uppercase;
+                color: #999;
+                margin-bottom: 14px;
+                text-align: center;
+            }
+
+            /* ─── FOOTER ─── */
+            .form-footer {
+                text-align: center;
+                margin-top: 40px;
+                font-size: .78rem;
+                color: #999;
+                line-height: 1.8;
+            }
+
+            .form-footer strong {
+                color: var(--crimson-dark);
+            }
+
+            /* ─── NAV BUTTONS ─── */
+            .nav-btns {
+                display: flex;
+                justify-content: space-between;
+                margin-top: 24px;
+            }
+
+            .btn-nav {
+                padding: 10px 28px;
+                border-radius: 8px;
+                border: 2px solid var(--crimson);
+                font-family: 'DM Sans', sans-serif;
+                font-size: .85rem;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all .2s;
+            }
+
+            .btn-nav-outline {
+                background: white;
+                color: var(--crimson);
+            }
+
+            .btn-nav-fill {
+                background: var(--crimson);
+                color: white;
+            }
+
+            .btn-nav:hover {
+                opacity: .85;
+                transform: translateY(-1px);
+            }
+
+            @media (max-width: 640px) {
+
+                .grid-2,
+                .grid-3,
+                .grid-4 {
+                    grid-template-columns: 1fr;
+                }
+
+                .col-span-2,
+                .col-span-3,
+                .col-span-4 {
+                    grid-column: span 1;
+                }
+
+                .rules-list {
+                    grid-template-columns: 1fr;
+                }
+
+                .sig-row {
+                    grid-template-columns: 1fr;
+                }
+
+                .course-options {
+                    flex-direction: column;
+                }
+
+                .header-logo {
+                    font-size: 1.4rem;
+                }
+            }
+        </style>
+    </head>
+
+    <body>
+
+        <!-- HEADER -->
+        <div class="header">
+            <div class="header-logo">C.M.S.N. <span>Nursing & Paramedical</span> College</div>
+            <div class="header-sub">11-Km-NH-28, Kasia Road, Kushami, Gorakhpur-273002</div>
+            <div class="header-badge">Session 2026–2027 · GNM / ANM Diploma</div>
+        </div>
+
+        <!-- TABS -->
+        <div class="tabs-bar">
+            <button class="tab-btn active" onclick="switchTab(0)" id="tab0">📋 Application Form</button>
+            <button class="tab-btn" onclick="switchTab(1)" id="tab1">🏫 Hostel Admission</button>
+            <button class="tab-btn" onclick="switchTab(2)" id="tab2">🪪 Admit Card</button>
+        </div>
+
+        <div class="container">
+
+            <!-- PROGRESS -->
+            <div class="progress-bar" id="progressBar">
+                <div class="progress-step">
+                    <div class="step-dot active" id="dot0">1</div>
+                    <div class="step-label">Application</div>
+                </div>
+                <div class="step-connector" id="conn0"></div>
+                <div class="progress-step">
+                    <div class="step-dot" id="dot1">2</div>
+                    <div class="step-label">Hostel</div>
+                </div>
+                <div class="step-connector" id="conn1"></div>
+                <div class="progress-step">
+                    <div class="step-dot" id="dot2">3</div>
+                    <div class="step-label">Admit Card</div>
+                </div>
+            </div>
+
+            <!-- ═══════════════════════════════ TAB 0: APPLICATION FORM ═══════════════════════════════ -->
+            <div class="tab-panel active" id="panel0">
+
+                <!-- PERSONAL INFO -->
+                <div class="section-card">
+                    <div class="section-head"><span class="icon">👤</span> Personal Information</div>
+                    <div class="section-body">
+                        <div style="display:grid; grid-template-columns:1fr 180px; gap:24px; align-items:start;">
+                            <div style="display:flex; flex-direction:column; gap:18px;">
+                                <div class="field">
+                                    <label>Full Name (In Block Letters) *</label>
+                                    <input type="text" placeholder="Enter full name" required>
+                                </div>
+                                <div class="grid-2">
+                                    <div class="field">
+                                        <label>Father's / Husband's / Guardian's Name *</label>
+                                        <input type="text" placeholder="Father/Husband/Guardian name">
+                                    </div>
+                                    <div class="field">
+                                        <label>Mother's Name</label>
+                                        <input type="text" placeholder="Mother's name">
+                                    </div>
+                                </div>
+                                <div class="grid-2">
+                                    <div class="field">
+                                        <label>Father's Occupation</label>
+                                        <input type="text" placeholder="e.g. Farmer, Business...">
+                                    </div>
+                                    <div class="field">
+                                        <label>Mother's Occupation</label>
+                                        <input type="text" placeholder="e.g. Housewife, Teacher...">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Photo Upload -->
+                            <div>
+                                <label
+                                    style="font-size:.72rem; font-weight:600; letter-spacing:1px; text-transform:uppercase; color:var(--crimson-dark); display:block; margin-bottom:8px;">Student
+                                    Photo</label>
+                                <div class="photo-upload-zone">
+                                    <input type="file" accept="image/*">
+                                    <div class="upload-icon">📷</div>
+                                    <p>Click to upload</p>
+                                    <span>Passport size photo</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ADDRESS -->
+                <div class="section-card">
+                    <div class="section-head"><span class="icon">🏠</span> Permanent Address</div>
+                    <div class="section-body">
+                        <div class="field address-block">
+                            <label>Address Line 1</label>
+                            <input type="text" placeholder="House No., Street, Village/Town">
+                        </div>
+                        <div class="field address-block" style="margin-top:12px;">
+                            <label>Address Line 2</label>
+                            <input type="text" placeholder="District, State">
+                        </div>
+                        <div class="grid-2" style="margin-top:12px;">
+                            <div class="field">
+                                <label>City / Town</label>
+                                <input type="text" placeholder="City">
+                            </div>
+                            <div class="field">
+                                <label>Pin Code</label>
+                                <input type="text" maxlength="6" placeholder="6-digit pin code">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BIO INFO -->
+                <div class="section-card">
+                    <div class="section-head"><span class="icon">📄</span> Biographical Details</div>
+                    <div class="section-body">
+                        <div class="grid-3">
+                            <div class="field">
+                                <label>Date of Birth *</label>
+                                <input type="date">
+                            </div>
+                            <div class="field">
+                                <label>Height</label>
+                                <input type="text" placeholder="e.g. 5'4&quot;">
+                            </div>
+                            <div class="field">
+                                <label>Weight (kg)</label>
+                                <input type="number" placeholder="e.g. 52">
+                            </div>
+                        </div>
+
+                        <div style="margin-top:18px;">
+                            <label
+                                style="font-size:.72rem; font-weight:600; letter-spacing:1px; text-transform:uppercase; color:var(--crimson-dark); display:block; margin-bottom:8px;">Sex
+                                *</label>
+                            <div class="radio-group">
+                                <label class="radio-opt"><input type="radio" name="sex" value="male"> Male</label>
+                                <label class="radio-opt"><input type="radio" name="sex" value="female"> Female</label>
+                            </div>
+                        </div>
+
+                        <div class="grid-4" style="margin-top:18px;">
+                            <div class="field">
+                                <label>Caste</label>
+                                <input type="text" placeholder="Caste">
+                            </div>
+                            <div class="field">
+                                <label>Nationality</label>
+                                <input type="text" placeholder="e.g. Indian">
+                            </div>
+                            <div class="field">
+                                <label>Religion</label>
+                                <input type="text" placeholder="Religion">
+                            </div>
+                            <div class="field">
+                                <label>Language</label>
+                                <input type="text" placeholder="Mother tongue">
+                            </div>
+                        </div>
+
+                        <div style="margin-top:18px;">
+                            <label
+                                style="font-size:.72rem; font-weight:600; letter-spacing:1px; text-transform:uppercase; color:var(--crimson-dark); display:block; margin-bottom:8px;">Category
+                                *</label>
+                            <div class="radio-group">
+                                <label class="radio-opt"><input type="radio" name="category" value="SC"> SC</label>
+                                <label class="radio-opt"><input type="radio" name="category" value="ST"> ST</label>
+                                <label class="radio-opt"><input type="radio" name="category" value="OBC"> OBC</label>
+                                <label class="radio-opt"><input type="radio" name="category" value="GENERAL" checked>
+                                    General</label>
+                            </div>
+                        </div>
+
+                        <div style="margin-top:18px;">
+                            <label
+                                style="font-size:.72rem; font-weight:600; letter-spacing:1px; text-transform:uppercase; color:var(--crimson-dark); display:block; margin-bottom:8px;">Marital
+                                Status</label>
+                            <div class="radio-group">
+                                <label class="radio-opt"><input type="radio" name="marital" value="married">
+                                    Married</label>
+                                <label class="radio-opt"><input type="radio" name="marital" value="unmarried" checked>
+                                    Unmarried</label>
+                                <label class="radio-opt"><input type="radio" name="marital" value="widow"> Widow</label>
+                                <label class="radio-opt"><input type="radio" name="marital" value="divorce">
+                                    Divorce</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LOCAL GUARDIAN -->
+                <div class="section-card">
+                    <div class="section-head"><span class="icon">🤝</span> Local Guardian Details</div>
+                    <div class="section-body">
+                        <div class="grid-2">
+                            <div class="field">
+                                <label>Name of Local Guardian</label>
+                                <input type="text" placeholder="Guardian's full name">
+                            </div>
+                            <div class="field">
+                                <label>Relationship with Guardian</label>
+                                <input type="text" placeholder="e.g. Uncle, Elder Brother...">
+                            </div>
+                        </div>
+                        <div class="field" style="margin-top:14px;">
+                            <label>Guardian's Address (with Pin Code)</label>
+                            <textarea placeholder="Complete address with pin code..."></textarea>
+                        </div>
+                        <div class="field" style="margin-top:14px;">
+                            <label>Phone / Mobile Number</label>
+                            <input type="tel" placeholder="10-digit mobile number">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MISC -->
+                <div class="section-card">
+                    <div class="section-head"><span class="icon">📝</span> Additional Information</div>
+                    <div class="section-body">
+                        <div style="margin-bottom:16px;">
+                            <label
+                                style="font-size:.72rem; font-weight:600; letter-spacing:1px; text-transform:uppercase; color:var(--crimson-dark); display:block; margin-bottom:8px;">Is
+                                Academic Education Continuing?</label>
+                            <div class="radio-group">
+                                <label class="radio-opt"><input type="radio" name="edu_continue" value="yes">
+                                    Yes</label>
+                                <label class="radio-opt"><input type="radio" name="edu_continue" value="no"> No</label>
+                            </div>
+                        </div>
+                        <div class="grid-2">
+                            <div class="field">
+                                <label>Previous Nursing Training Institution (if any)</label>
+                                <input type="text" placeholder="Institution name">
+                            </div>
+                            <div class="field">
+                                <label>Name of Person Who Deposited Fee</label>
+                                <input type="text" placeholder="Full name">
+                            </div>
+                        </div>
+                        <div class="field" style="margin-top:14px;">
+                            <label>Phone Number (Applicant)</label>
+                            <input type="tel" placeholder="Contact number">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ACADEMIC QUALIFICATIONS -->
+                <div class="section-card">
+                    <div class="section-head"><span class="icon">🎓</span> Academic Qualifications</div>
+                    <div class="section-body">
+                        <table class="qual-table">
+                            <thead>
+                                <tr>
+                                    <th style="width:40px;">#</th>
+                                    <th>Board / University</th>
+                                    <th>Subjects</th>
+                                    <th style="width:130px;">% of Marks</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="row-num">1</td>
+                                    <td><input type="text" placeholder="Board/University name"></td>
+                                    <td><input type="text" placeholder="Subjects"></td>
+                                    <td><input type="number" placeholder="%" min="0" max="100"></td>
+                                </tr>
+                                <tr>
+                                    <td class="row-num">2</td>
+                                    <td><input type="text" placeholder="Board/University name"></td>
+                                    <td><input type="text" placeholder="Subjects"></td>
+                                    <td><input type="number" placeholder="%" min="0" max="100"></td>
+                                </tr>
+                                <tr>
+                                    <td class="row-num">3</td>
+                                    <td><input type="text" placeholder="Board/University name"></td>
+                                    <td><input type="text" placeholder="Subjects"></td>
+                                    <td><input type="number" placeholder="%" min="0" max="100"></td>
+                                </tr>
+                                <tr>
+                                    <td class="row-num">4</td>
+                                    <td><input type="text" placeholder="Board/University name"></td>
+                                    <td><input type="text" placeholder="Subjects"></td>
+                                    <td><input type="number" placeholder="%" min="0" max="100"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- PROFESSIONAL QUALIFICATIONS -->
+                <div class="section-card">
+                    <div class="section-head"><span class="icon">🏥</span> Other Professional Qualifications</div>
+                    <div class="section-body">
+                        <table class="qual-table">
+                            <thead>
+                                <tr>
+                                    <th style="width:40px;">#</th>
+                                    <th>Board / College / University</th>
+                                    <th>Subjects</th>
+                                    <th style="width:130px;">% of Marks</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="row-num">1</td>
+                                    <td><input type="text" placeholder="Institution name"></td>
+                                    <td><input type="text" placeholder="Subjects"></td>
+                                    <td><input type="number" placeholder="%" min="0" max="100"></td>
+                                </tr>
+                                <tr>
+                                    <td class="row-num">2</td>
+                                    <td><input type="text" placeholder="Institution name"></td>
+                                    <td><input type="text" placeholder="Subjects"></td>
+                                    <td><input type="number" placeholder="%" min="0" max="100"></td>
+                                </tr>
+                                <tr>
+                                    <td class="row-num">3</td>
+                                    <td><input type="text" placeholder="Institution name"></td>
+                                    <td><input type="text" placeholder="Subjects"></td>
+                                    <td><input type="number" placeholder="%" min="0" max="100"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- DECLARATION -->
+                <div class="section-card">
+                    <div class="section-head"><span class="icon">✍️</span> Declaration</div>
+                    <div class="section-body">
+                        <div class="declaration-box">
+                            I / We ……………………………………………… S/o, D/o ……………………………………… hereby declare that the above statement
+                            and information are correct to the best of my / our knowledge.
+                        </div>
+                        <div class="sig-row">
+                            <div class="sig-field">
+                                <div class="sig-line">Parent / Guardian Signature</div>
+                                <label>Parent's Signature</label>
+                            </div>
+                            <div class="sig-field">
+                                <div class="sig-line">Candidate Signature</div>
+                                <label>Candidate's Signature</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RULES -->
+                <div class="rules-box">
+                    <h4>📜 Rules &amp; Regulations</h4>
+                    <ul class="rules-list">
+                        <li>Student is requested to reach in the class on time.</li>
+                        <li>80% Attendance is compulsory for the exam.</li>
+                        <li>Late fee will be charged if fee is not submitted on due date.</li>
+                        <li>Weekly projects &amp; progress test should not be avoided.</li>
+                        <li>Management could cancel registration of candidate if found cheating.</li>
+                        <li>No student will be allowed to leave class in between.</li>
+                    </ul>
+                </div>
+
+                <div class="nav-btns" style="margin-top:24px;">
+                    <div></div>
+                    <button class="btn-nav btn-nav-fill" onclick="switchTab(1)">Next: Hostel Admission →</button>
+                </div>
+            </div>
+
+            <!-- ═══════════════════════════════ TAB 1: HOSTEL ADMISSION ═══════════════════════════════ -->
+            <div class="tab-panel" id="panel1">
+
+                <div class="section-card">
+                    <div class="section-head"><span class="icon">🏘️</span> Hostel Admission Form</div>
+                    <div class="section-body">
+                        <div class="grid-2">
+                            <div class="field">
+                                <label>Form No.</label>
+                                <input type="text" placeholder="Form number">
+                            </div>
+                            <div class="field">
+                                <label>Date</label>
+                                <input type="date">
+                            </div>
+                        </div>
+                        <div class="grid-2" style="margin-top:16px;">
+                            <div class="field">
+                                <label>Name of Applicant *</label>
+                                <input type="text" placeholder="Full name">
+                            </div>
+                            <div class="field">
+                                <label>Father's / Guardian's Name *</label>
+                                <input type="text" placeholder="Father/Guardian name">
+                            </div>
+                        </div>
+                        <div class="grid-3" style="margin-top:16px;">
+                            <div class="field">
+                                <label>Course *</label>
+                                <select>
+                                    <option value="">Select course</option>
+                                    <option>GNM (General Nursing & Midwifery)</option>
+                                    <option>ANM (Auxiliary Nurse Midwifery)</option>
+                                </select>
+                            </div>
+                            <div class="field">
+                                <label>Class / Year</label>
+                                <input type="text" placeholder="e.g. 1st Year">
+                            </div>
+                            <div class="field">
+                                <label>Blood Group</label>
+                                <select>
+                                    <option value="">Select</option>
+                                    <option>A+</option>
+                                    <option>A-</option>
+                                    <option>B+</option>
+                                    <option>B-</option>
+                                    <option>AB+</option>
+                                    <option>AB-</option>
+                                    <option>O+</option>
+                                    <option>O-</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="grid-2" style="margin-top:16px;">
+                            <div class="field">
+                                <label>Date of Birth</label>
+                                <input type="date">
+                            </div>
+                            <div class="field">
+                                <label>Mobile Number</label>
+                                <input type="tel" placeholder="10-digit number">
+                            </div>
+                        </div>
+                        <div class="field" style="margin-top:16px;">
+                            <label>Permanent Home Address</label>
+                            <textarea placeholder="Complete permanent address..."></textarea>
+                        </div>
+                        <div class="field" style="margin-top:14px;">
+                            <label>Contact No. (Landline)</label>
+                            <input type="tel" placeholder="Landline number with STD code">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GUARDIAN CERTIFICATE -->
+                <div class="section-card">
+                    <div class="section-head"><span class="icon">📜</span> Guardian Certificate</div>
+                    <div class="section-body">
+                        <div class="declaration-box" style="font-size:.9rem;">
+                            I ……………………………………………… certify that my Son / Daughter ……………………………………………… is applying for
+                            Hostel accommodation on the Campus of the CMSN Nursing &amp; Paramedical College, Gorakhpur
+                            with my permission and I undertake that I will be responsible for his/her good behavior
+                            during his/her stay in the Nursing Hostel and will accept all decisions of the Nursing
+                            Authorities in matter of Hostel Admission and Discipline. I will be responsible to pay all
+                            the Hostel Dues, if any, against my son/daughter.
+                        </div>
+                        <div class="grid-2" style="margin-top:18px;">
+                            <div class="field">
+                                <label>Guardian's Name</label>
+                                <input type="text" placeholder="Full name">
+                            </div>
+                            <div class="field">
+                                <label>Guardian's Father's Name</label>
+                                <input type="text" placeholder="Father's name">
+                            </div>
+                        </div>
+                        <div class="field" style="margin-top:14px;">
+                            <label>Guardian's Address</label>
+                            <textarea placeholder="Complete address..."></textarea>
+                        </div>
+                        <div class="grid-2" style="margin-top:14px;">
+                            <div class="field">
+                                <label>Pin Code</label>
+                                <input type="text" maxlength="6" placeholder="6-digit pin">
+                            </div>
+                            <div class="field">
+                                <label>Contact No.</label>
+                                <input type="tel" placeholder="Mobile / Phone number">
+                            </div>
+                        </div>
+                        <div class="sig-row" style="margin-top:24px;">
+                            <div class="sig-field">
+                                <div class="sig-line">Signature</div>
+                                <label>Applicant's Signature</label>
+                            </div>
+                            <div class="sig-field">
+                                <div class="sig-line">Signature</div>
+                                <label>Guardian's Signature</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FOR OFFICE USE -->
+                <div class="section-card">
+                    <div class="section-head"><span class="icon">🏢</span> For Office Use Only</div>
+                    <div class="section-body">
+                        <div class="office-section">
+                            <h4>— office section —</h4>
+                            <div class="grid-2">
+                                <div class="field">
+                                    <label>Allotted Seat In</label>
+                                    <input type="text" placeholder="Room / Block details">
+                                </div>
+                                <div class="field">
+                                    <label>Receipt No.</label>
+                                    <input type="text" placeholder="Receipt number">
+                                </div>
+                            </div>
+                            <div class="grid-2" style="margin-top:14px;">
+                                <div class="field">
+                                    <label>Received Rs.</label>
+                                    <input type="number" placeholder="Amount">
+                                </div>
+                                <div class="field">
+                                    <label>Bank Name</label>
+                                    <input type="text" placeholder="Bank name">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-btns">
+                    <button class="btn-nav btn-nav-outline" onclick="switchTab(0)">← Back</button>
+                    <button class="btn-nav btn-nav-fill" onclick="switchTab(2)">Next: Admit Card →</button>
+                </div>
+            </div>
+
+            <!-- ═══════════════════════════════ TAB 2: ADMIT CARD ═══════════════════════════════ -->
+            <div class="tab-panel" id="panel2">
+
+                <div class="admit-card-preview">
+                    <div class="admit-card-header">
+                        <div>
+                            <div class="admit-card-header-title">C.M.S.N. Nursing & Paramedical College</div>
+                            <div class="admit-card-header-sub">11-Km-NH-28, Rudrapur Kasia Road, Kushami,
+                                Gorakhpur-273002</div>
+                            <div class="admit-card-header-sub" style="margin-top:4px; opacity:.6;">Mob: 9839064502,
+                                9415261827, 7388609999</div>
+                        </div>
+                        <div class="photo-box">
+                            <input type="file" accept="image/*">
+                            <span>Affix Passport<br>Size Photo</span>
+                        </div>
+                    </div>
+
+                    <div style="background:var(--gold); padding:8px 24px; text-align:center;">
+                        <span
+                            style="font-family:'Playfair Display',serif; font-size:.95rem; font-weight:700; color:var(--ink); letter-spacing:1px;">ADMIT
+                            CARD FOR ENTRANCE EXAM</span>
+                    </div>
+
+                    <div class="admit-card-body">
+                        <div class="field">
+                            <label>1. Name of the Candidate *</label>
+                            <input type="text" placeholder="Full name (as in application form)">
+                        </div>
+
+                        <div class="admit-card-divider"></div>
+
+                        <div class="grid-2">
+                            <div class="field">
+                                <label>2. Age</label>
+                                <input type="number" placeholder="Age in years" min="15" max="50">
+                            </div>
+                            <div class="field">
+                                <label>3. Gender</label>
+                                <div class="radio-group" style="padding:10px 0 0;">
+                                    <label class="radio-opt"><input type="radio" name="admit_gender" value="male">
+                                        Male</label>
+                                    <label class="radio-opt"><input type="radio" name="admit_gender" value="female">
+                                        Female</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="admit-card-divider"></div>
+
+                        <div class="field">
+                            <label>4. S/o, D/o, W/o</label>
+                            <input type="text" placeholder="Son/Daughter/Wife of">
+                        </div>
+
+                        <div class="admit-card-divider"></div>
+
+                        <div>
+                            <label
+                                style="font-size:.72rem; font-weight:600; letter-spacing:1px; text-transform:uppercase; color:var(--crimson-dark); display:block; margin-bottom:12px;">5.
+                                Course Applied For *</label>
+                            <div class="course-options">
+                                <label class="course-opt">
+                                    <input type="radio" name="admit_course" value="ANM">
+                                    <div>
+                                        <div class="course-opt-label">ANM</div>
+                                        <div class="course-opt-sub">Auxiliary Nurse Midwifery</div>
+                                    </div>
+                                </label>
+                                <label class="course-opt">
+                                    <input type="radio" name="admit_course" value="GNM">
+                                    <div>
+                                        <div class="course-opt-label">GNM</div>
+                                        <div class="course-opt-sub">General Nursing & Midwifery</div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="admit-card-divider"></div>
+
+                        <div class="sig-row">
+                            <div class="sig-field">
+                                <div class="sig-line">Signature Here</div>
+                                <label>Signature of Candidate</label>
+                            </div>
+                            <div
+                                style="background:#fff8f0; border:1.5px solid var(--gold); border-radius:10px; padding:14px 18px; font-size:.78rem; color:var(--ink-light); line-height:1.7;">
+                                <strong style="color:var(--crimson-dark);">📌 Note:</strong> It is compulsory to bring
+                                the Admit Card in the Entrance Exam.<br><br>
+                                <strong>Venue of Examination:</strong><br>
+                                CMSN Nursing and Paramedical College, Kushmi, Gorakhpur
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- OFFICE USE ONLY (APPLICATION FORM) -->
+                <div class="section-card" style="margin-top:24px;">
+                    <div class="section-head"><span class="icon">🏢</span> Office Use Only — Application</div>
+                    <div class="section-body">
+                        <div class="office-section">
+                            <h4>— for staff only —</h4>
+                            <div class="grid-2">
+                                <div class="field">
+                                    <label>Name</label>
+                                    <input type="text" placeholder="—">
+                                </div>
+                                <div class="field">
+                                    <label>Address</label>
+                                    <input type="text" placeholder="—">
+                                </div>
+                            </div>
+                            <div class="grid-2" style="margin-top:14px;">
+                                <div class="field">
+                                    <label>Application Form No.</label>
+                                    <input type="text" placeholder="—">
+                                </div>
+                                <div class="field">
+                                    <label>Interview Taken By</label>
+                                    <input type="text" placeholder="Staff name">
+                                </div>
+                            </div>
+                            <div class="grid-2" style="margin-top:14px;">
+                                <div class="field">
+                                    <label>Remark</label>
+                                    <input type="text" placeholder="Any remarks...">
+                                </div>
+                                <div class="field">
+                                    <label>Date</label>
+                                    <input type="date">
+                                </div>
+                            </div>
+                            <div style="margin-top:16px;">
+                                <label
+                                    style="font-size:.72rem; font-weight:600; letter-spacing:1px; text-transform:uppercase; color:#999;">Authorised
+                                    Signature</label>
+                                <div class="sig-line" style="width:200px; margin-top:6px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-btns">
+                    <button class="btn-nav btn-nav-outline" onclick="switchTab(1)">← Back</button>
+                    <div></div>
+                </div>
+
+                <!-- FINAL SUBMIT -->
+                <div class="submit-section" style="margin-top:32px;">
+                    <button class="btn-submit" onclick="handleSubmit()">
+                        Submit Complete Application 🎓
+                    </button>
+                    <div style="margin-top:12px; font-size:.77rem; color:#999;">
+                        Please ensure all fields are correctly filled before submitting.
+                    </div>
+                </div>
+            </div>
+
+            <!-- FOOTER -->
+            <div class="form-footer">
+                <strong>C.M.S.N. Nursing & Paramedical College</strong><br>
+                11 km. N. H. - 28, Rudrapur, Kushmi, Gorakhpur-273002 (U.P.)<br>
+                E-mail: cmsnnursing@gmail.com &nbsp;|&nbsp; Application Fee: ₹300/-
+            </div>
 
         </div>
-    </div>
 
-</div>
+        <script>
+            let currentTab = 0;
 
-{% endblock %}
+            function switchTab(idx) {
+                // Update panels
+                document.querySelectorAll('.tab-panel').forEach((p, i) => {
+                    p.classList.toggle('active', i === idx);
+                });
+                // Update tab buttons
+                document.querySelectorAll('.tab-btn').forEach((b, i) => {
+                    b.classList.toggle('active', i === idx);
+                });
+                // Update progress dots
+                for (let i = 0; i < 3; i++) {
+                    const dot = document.getElementById('dot' + i);
+                    if (i < idx) { dot.classList.add('done'); dot.classList.remove('active'); dot.textContent = '✓'; }
+                    else if (i === idx) { dot.classList.add('active'); dot.classList.remove('done'); dot.textContent = i + 1; }
+                    else { dot.classList.remove('active', 'done'); dot.textContent = i + 1; }
+                }
+                // Update connectors
+                for (let i = 0; i < 2; i++) {
+                    const c = document.getElementById('conn' + i);
+                    c.classList.toggle('done', i < idx);
+                }
+                currentTab = idx;
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            function handleSubmit() {
+                const btn = document.querySelector('.btn-submit');
+                btn.textContent = '✅ Application Submitted!';
+                btn.style.background = 'linear-gradient(135deg,#1a7a3c,#2ecc71)';
+                setTimeout(() => {
+                    alert('🎉 Your application has been submitted successfully!\n\nPlease keep a copy of your admit card for the entrance exam.\n\nVenue: CMSN Nursing & Paramedical College, Kushmi, Gorakhpur');
+                }, 300);
+            }
+        </script>
+    </body>
+
+</html>

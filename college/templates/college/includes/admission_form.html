@@ -1,0 +1,41 @@
+{% load static %}
+<form id="modal-admission-form" class="modal-form" method="post" action="/admission/" enctype="multipart/form-data"
+    style="display:none;">
+    {% csrf_token %}
+    <h3>Apply for Admission</h3>
+
+    <div class="field">
+        <label>Name *</label>
+        <input name="name" required type="text" placeholder="Full name">
+    </div>
+
+    <div class="grid-2">
+        <div class="field">
+            <label>Email *</label>
+            <input name="email" required type="email" placeholder="Email">
+        </div>
+        <div class="field">
+            <label>Phone *</label>
+            <input name="phone" required type="tel" placeholder="Mobile number">
+        </div>
+    </div>
+
+    <div class="field">
+        <label>Course</label>
+        <select name="course">
+            <option value="">Select course</option>
+            <option value="GNM">GNM (General Nursing & Midwifery)</option>
+            <option value="ANM">ANM (Auxiliary Nurse Midwifery)</option>
+        </select>
+    </div>
+
+    <div class="field">
+        <label>Upload Photo / Documents</label>
+        <input name="document" type="file" accept="image/*,.pdf">
+    </div>
+
+    <div style="margin-top:12px; display:flex; gap:10px; justify-content:flex-end;">
+        <button type="button" class="btn btn-secondary modal-close">Cancel</button>
+        <button type="submit" class="btn btn-primary">Submit Application</button>
+    </div>
+</form>
