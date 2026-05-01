@@ -58,6 +58,16 @@
         margin: 0 6px;
     }
 
+    .approval-bar a {
+        color: var(--gold);
+        text-decoration: none;
+        margin: 0 6px;
+    }
+
+    .approval-bar a:hover {
+        color: #fff;
+    }
+
     /* Note: header/nav provided by base template; removed local site-header to avoid duplicates */
 
     /* ── HERO ── */
@@ -721,33 +731,7 @@
     }
 
     .gallery-tabs {
-        display: flex;
-        gap: 12px;
-        justify-content: center;
-        margin-bottom: 40px;
-    }
-
-    .g-tab {
-        padding: 10px 28px;
-        border-radius: 50px;
-        font-weight: 600;
-        font-size: .9rem;
-        border: 2px solid var(--border);
-        background: #fff;
-        color: var(--gray);
-        cursor: pointer;
-        transition: var(--transition);
-    }
-
-    .g-tab.active,
-    .g-tab:hover {
-        border-color: var(--teal);
-        color: var(--teal);
-        background: rgba(10, 124, 110, .06);
-    }
-
-    .g-tab.active {
-        pointer-events: none;
+        display: none;
     }
 
     .gallery-grid {
@@ -768,27 +752,6 @@
     .gallery-grid img:hover {
         transform: scale(1.04);
         box-shadow: 0 12px 32px rgba(0, 0, 0, .18);
-    }
-
-    /* Slideshow */
-    .slideshow-wrap {
-        text-align: center;
-    }
-
-    #fast-carousel {
-        display: inline-block;
-        border-radius: var(--radius);
-        overflow: hidden;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, .2);
-        max-width: 760px;
-        width: 100%;
-    }
-
-    #fast-carousel img {
-        width: 100%;
-        display: block;
-        max-height: 480px;
-        object-fit: cover;
     }
 
     /* ── TERMS ── */
@@ -1051,7 +1014,12 @@
     }
 </style>
 
-<!-- Page content uses base navbar; hero follows below -->
+<!-- APPROVAL BAR -->
+<div class="approval-bar">
+    <span>INC Approved Institution</span> |
+    <a href="https://www.upsmfac.org/en" target="_blank">Affiliated to Uttar Pradesh State Medical Faculty</a> |
+    <a href="https://www.indiannursingcouncil.org/" target="_blank">Recognized by Indian Nursing Council</a>
+</div>
 
 <!-- HERO -->
 <section class="hero">
@@ -1062,7 +1030,8 @@
         </div>
         <div class="hero-badge"><i class="fas fa-shield-halved"></i> INC Approved Institution</div>
         <h1>Chandramauli Swaminath<br><em>Nursing &amp; Paramedical College</em></h1>
-        <p class="sub">N.H.‑28, Rudrapur, Kushmi, Gorakhpur &nbsp;·&nbsp; Shaping tomorrow's healthcare heroes through
+        <p class="sub">Gorakhpur-Kushinagar Rd, Jungle Ramgarh Urf Sarka, Uttar Pradesh 273002 &nbsp;·&nbsp; Shaping
+            tomorrow's healthcare heroes through
             excellence in education &amp; clinical training.</p>
         <div class="hero-btns">
             <a href="/admission/" class="btn-hero-primary">Apply for Admission</a>
@@ -1237,21 +1206,10 @@
             <h2>College <em>Gallery</em></h2>
             <div class="divider-line"></div>
         </div>
-        <div class="gallery-tabs">
-            <button class="g-tab active" id="tab-grid">Photo Grid</button>
-            <button class="g-tab" id="tab-slideshow">Slideshow</button>
-        </div>
-        <div id="grid-view">
-            <div class="gallery-grid">
-                {% for image in gallery %}
-                <img src="{{ image.image.url }}" alt="Gallery Image">
-                {% endfor %}
-            </div>
-        </div>
-        <div id="slideshow-view" style="display:none;" class="slideshow-wrap">
-            <div id="fast-carousel">
-                <img id="fast-carousel-img" src="/static/images/cmsn01.jpg" alt="College">
-            </div>
+        <div class="gallery-grid">
+            {% for image in gallery %}
+            <img src="{{ image.image.url }}" alt="Gallery Image">
+            {% endfor %}
         </div>
     </div>
 </section>
@@ -1310,59 +1268,5 @@
 <a href="https://wa.me/918948274515" class="wa-btn" title="Chat on WhatsApp">
     <i class="fab fa-whatsapp"></i>
 </a>
-
-<!-- SLIDESHOW SCRIPT -->
-<script>
-    (function () {
-        const count = 12, base = '/static/images/cmsn', exts = ['.jpg', '.jpeg', '.png', '.webp'];
-        const pad = n => String(n).padStart(2, '0');
-
-        function detectExt(cb) {
-            let i = 0;
-            const tryExt = () => {
-                if (i >= exts.length) return cb(exts[0]);
-                const img = new Image();
-                img.onload = () => cb(exts[i]);
-                img.onerror = () => { i++; tryExt(); };
-                img.src = base + pad(1) + exts[i];
-            }; tryExt();
-        }
-
-        detectExt(function (ext) {
-            const sources = Array.from({ length: count }, (_, i) => base + pad(i + 1) + ext);
-            sources.forEach(s => { const ii = new Image(); ii.src = s; });
-            const imgEl = document.getElementById('fast-carousel-img');
-            if (!imgEl) return;
-            imgEl.style.transition = 'opacity .25s ease';
-            let idx = 0;
-            const interval = 1400;
-            function show() {
-                imgEl.style.opacity = 0;
-                setTimeout(() => { imgEl.src = sources[idx]; imgEl.style.opacity = 1; idx = (idx + 1) % sources.length; }, 220);
-            }
-            let timer = setInterval(show, interval);
-
-            const btnGrid = document.getElementById('tab-grid');
-            const btnSlide = document.getElementById('tab-slideshow');
-            const gridView = document.getElementById('grid-view');
-            const slideView = document.getElementById('slideshow-view');
-
-            function setActive(btn) {
-                document.querySelectorAll('.g-tab').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-            }
-            btnSlide.addEventListener('click', () => {
-                gridView.style.display = 'none'; slideView.style.display = 'block';
-                setActive(btnSlide);
-                if (!timer) timer = setInterval(show, interval);
-            });
-            btnGrid.addEventListener('click', () => {
-                slideView.style.display = 'none'; gridView.style.display = 'block';
-                setActive(btnGrid);
-                if (timer) { clearInterval(timer); timer = null; }
-            });
-        });
-    })();
-</script>
 
 {% endblock %}

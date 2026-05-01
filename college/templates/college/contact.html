@@ -2,129 +2,136 @@
 {% block content %}
 
 <style>
+    /* Background */
+    body {
+        background: linear-gradient(135deg, #141e30, #243b55);
+    }
 
-/* Background */
-body{
-    background: linear-gradient(135deg,#141e30,#243b55);
-}
+    /* Glass Card */
+    .contact-card {
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(14px);
+        border-radius: 15px;
+        padding: 35px;
+        box-shadow: 0 10px 35px rgba(0, 0, 0, 0.3);
+        color: white;
+    }
 
-/* Glass Card */
-.contact-card{
-    background: rgba(255,255,255,0.08);
-    backdrop-filter: blur(14px);
-    border-radius:15px;
-    padding:35px;
-    box-shadow:0 10px 35px rgba(0,0,0,0.3);
-    color:white;
-}
+    /* Title */
+    .contact-title {
+        font-weight: 700;
+        margin-bottom: 20px;
+    }
 
-/* Title */
-.contact-title{
-    font-weight:700;
-    margin-bottom:20px;
-}
+    /* Inputs */
+    .form-control {
+        background: rgba(255, 255, 255, 0.1);
+        border: none;
+        color: white;
+        border-radius: 8px;
+        padding: 12px;
+    }
 
-/* Inputs */
-.form-control{
-    background:rgba(255,255,255,0.1);
-    border:none;
-    color:white;
-    border-radius:8px;
-    padding:12px;
-}
+    .form-control::placeholder {
+        color: #ddd;
+    }
 
-.form-control::placeholder{
-    color:#ddd;
-}
+    .form-control:focus {
+        background: rgba(255, 255, 255, 0.15);
+        border: 1px solid #00c6ff;
+        box-shadow: none;
+        color: white;
+    }
 
-.form-control:focus{
-    background:rgba(255,255,255,0.15);
-    border:1px solid #00c6ff;
-    box-shadow:none;
-    color:white;
-}
+    /* Button */
+    .btn-contact {
+        background: linear-gradient(45deg, #00c6ff, #0072ff);
+        border: none;
+        font-weight: 600;
+        padding: 12px;
+        border-radius: 8px;
+        transition: .3s;
+    }
 
-/* Button */
-.btn-contact{
-    background:linear-gradient(45deg,#00c6ff,#0072ff);
-    border:none;
-    font-weight:600;
-    padding:12px;
-    border-radius:8px;
-    transition:.3s;
-}
+    .btn-contact:hover {
+        transform: scale(1.05);
+        box-shadow: 0 5px 20px rgba(0, 114, 255, 0.5);
+    }
 
-.btn-contact:hover{
-    transform:scale(1.05);
-    box-shadow:0 5px 20px rgba(0,114,255,0.5);
-}
+    /* Contact Info */
+    .contact-info p {
+        margin-bottom: 12px;
+        font-size: 15px;
+    }
 
-/* Contact Info */
-.contact-info p{
-    margin-bottom:12px;
-    font-size:15px;
-}
-
-.icon{
-    margin-right:8px;
-    color:#00c6ff;
-    font-weight:bold;
-}
-
+    .icon {
+        margin-right: 8px;
+        color: #00c6ff;
+        font-weight: bold;
+    }
 </style>
 
 
 <div class="container py-5">
 
-<div class="row justify-content-center align-items-center">
+    <div class="row justify-content-center align-items-center">
 
-    <!-- Contact Info -->
-    <div class="col-md-5 mb-4">
-        <div class="contact-card contact-info">
-            <h3 class="contact-title">📞 Get in Touch</h3>
+        <!-- Contact Info -->
+        <div class="col-md-5 mb-4">
+            <div class="contact-card contact-info">
+                <h3 class="contact-title">📞 Get in Touch</h3>
 
-            <p><span class="icon">📍</span> CS Nursing College, Kanpur</p>
-            <p><span class="icon">📧</span> info@csnursingcollege.com</p>
-            <p><span class="icon">☎</span> +91 9876543210</p>
-            <p><span class="icon">🕒</span> Mon - Sat : 9:00 AM - 5:00 PM</p>
+                <p><span class="icon">📍</span> Chandramauli Swaminath Nursing & Paramedical
+                    College<br>Gorakhpur-Kushinagar Rd, Jungle Ramgarh Urf Sarka, Uttar Pradesh 273002</p>
+                <p><span class="icon">📧</span> cmsnnursing@gmail.com</p>
+                <p><span class="icon">☎</span> +91 9839064502</p>
+                <p><span class="icon">🕒</span> Mon - Sat : 9:00 AM - 5:00 PM</p>
 
-            <hr style="border-color:rgba(255,255,255,0.2);">
+                <hr style="border-color:rgba(255,255,255,0.2);">
 
-            <p>
-                Have questions about admission, courses, or facilities?  
-                Send us a message and our team will contact you soon.
-            </p>
+                <p>
+                    Have questions about admission, courses, or facilities?
+                    Send us a message and our team will contact you soon.
+                </p>
+
+                <div style="margin-top:20px;">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3577.1234567890123!2d83.4855754!3d26.7467686!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3993e143620e1c55%3A0x72fefeba15427d9a!2sChandramauli%20Swaminath%20Nursing%20%26%20Paramedical%20College!5e0!3m2!1sen!2sin!4v1712345678901!5m2!1sen!2sin"
+                        width="100%" height="200" style="border:0;border-radius:8px;" allowfullscreen="" loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>
         </div>
-    </div>
 
 
-    <!-- Contact Form -->
-    <div class="col-md-6">
-        <div class="contact-card">
+        <!-- Contact Form -->
+        <div class="col-md-6">
+            <div class="contact-card">
 
-            <h3 class="contact-title text-center">Contact / Enquiry Form</h3>
+                <h3 class="contact-title text-center">Contact / Enquiry Form</h3>
 
-            <form method="post">
-                {% csrf_token %}
+                <form method="post">
+                    {% csrf_token %}
 
-                <input class="form-control mb-3" name="name" placeholder="Your Name" required>
+                    <input class="form-control mb-3" name="name" placeholder="Your Name" required>
 
-                <input class="form-control mb-3" type="email" name="email" placeholder="Email Address" required>
+                    <input class="form-control mb-3" type="email" name="email" placeholder="Email Address" required>
 
-                <input class="form-control mb-3" name="phone" placeholder="Phone Number" required>
+                    <input class="form-control mb-3" name="phone" placeholder="Phone Number" required>
 
-                <textarea class="form-control mb-4" rows="5" name="message" placeholder="Write your message..." required></textarea>
+                    <textarea class="form-control mb-4" rows="5" name="message" placeholder="Write your message..."
+                        required></textarea>
 
-                <button class="btn btn-contact w-100">
-                    Send Message
-                </button>
+                    <button class="btn btn-contact w-100">
+                        Send Message
+                    </button>
 
-            </form>
+                </form>
 
+            </div>
         </div>
-    </div>
 
-</div>
+    </div>
 
 </div>
 
