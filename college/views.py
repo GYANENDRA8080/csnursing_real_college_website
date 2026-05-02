@@ -3,6 +3,7 @@ import time
 from urllib.parse import urljoin
 from urllib.request import Request, urlopen
 
+from django.db.utils import OperationalError
 from django.shortcuts import render, redirect
 from django.core.mail import send_mail
 from django.conf import settings
@@ -61,15 +62,23 @@ def fetch_upsmfac_notices(limit=5, cache_seconds=900):
         return []
 
 
+def _safe_list(queryset):
+    try:
+        return list(queryset)
+    except OperationalError as e:
+        print("Database query failed:", e)
+        return []
+
+
 def home(request):
     return render(
         request,
         "college/home.html",
         {
-            "courses": Course.objects.all(),
-            "notices": Notice.objects.all().order_by("-date")[:5],
+            "courses": _safe_list(Course.objects.all()),
+            "notices": _safe_list(Notice.objects.all().order_by("-date")[:5]),
             "external_notices": fetch_upsmfac_notices(),
-            "gallery": Gallery.objects.all()[:8],
+            "gallery": _safe_list(Gallery.objects.all()[:8]),
         },
     )
 
