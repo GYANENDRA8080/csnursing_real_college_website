@@ -1,9 +1,64 @@
+import re
+import time
+from urllib.parse import urljoin
+from urllib.request import Request, urlopen
+
 from django.shortcuts import render, redirect
 from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib import messages
 from .models import Course, Notice, Gallery, Admission, Enquiry
 from .forms import AdmissionForm
+
+_NOTICE_CACHE = {
+    "timestamp": 0,
+    "data": [],
+}
+
+
+def fetch_upsmfac_notices(limit=5, cache_seconds=900):
+    if time.time() - _NOTICE_CACHE["timestamp"] < cache_seconds:
+        return _NOTICE_CACHE["data"]
+
+    url = "https://upsmfac.org/en/news"
+    try:
+        req = Request(url, headers={"User-Agent": "Mozilla/5.0"})
+        with urlopen(req, timeout=15) as resp:
+            html = resp.read().decode("utf-8", errors="ignore")
+
+        table_match = re.search(
+            r'<table[^>]+id=["\']ContentPlaceHolder_Body_gdvNewsContent["\'][^>]*>(.*?)</table>',
+            html,
+            re.IGNORECASE | re.DOTALL,
+        )
+        notices = []
+        if table_match:
+            table_html = table_match.group(1)
+            for row in re.findall(
+                r"<tr>(.*?)</tr>", table_html, re.IGNORECASE | re.DOTALL
+            ):
+                link_match = re.search(
+                    r'<a[^>]+href=["\']([^"\']+)["\'][^>]*>.*?<span[^>]*>(.*?)</span>',
+                    row,
+                    re.IGNORECASE | re.DOTALL,
+                )
+                if not link_match:
+                    continue
+                href = link_match.group(1).strip()
+                title = re.sub(r"<[^>]+>", "", link_match.group(2)).strip()
+                if not title:
+                    continue
+                href = urljoin(url, href)
+                notices.append({"title": title, "url": href})
+                if len(notices) >= limit:
+                    break
+
+        _NOTICE_CACHE["timestamp"] = time.time()
+        _NOTICE_CACHE["data"] = notices
+        return notices
+    except Exception as e:
+        print("UPSMFAC news fetch failed:", e)
+        return []
 
 
 def home(request):
@@ -13,6 +68,7 @@ def home(request):
         {
             "courses": Course.objects.all(),
             "notices": Notice.objects.all().order_by("-date")[:5],
+            "external_notices": fetch_upsmfac_notices(),
             "gallery": Gallery.objects.all()[:8],
         },
     )

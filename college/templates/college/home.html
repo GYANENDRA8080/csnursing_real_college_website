@@ -1,4 +1,5 @@
 {% extends 'college/base.html' %}
+{% load static %}
 {% block content %}
 
 <link
@@ -607,6 +608,98 @@
         color: #fff;
     }
 
+    .admission-tabs {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin: 32px 0 20px;
+    }
+
+    .admission-tab {
+        background: rgba(255, 255, 255, .08);
+        color: #fff;
+        border: 1px solid rgba(255, 255, 255, .15);
+        padding: 12px 20px;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: var(--transition);
+        font-weight: 600;
+        font-size: .95rem;
+    }
+
+    .admission-tab.active {
+        background: #fff;
+        color: var(--teal);
+        border-color: var(--teal);
+    }
+
+    .admission-panel {
+        display: none;
+        background: rgba(255, 255, 255, .08);
+        border: 1px solid rgba(255, 255, 255, .12);
+        border-radius: var(--radius);
+        padding: 30px;
+        margin-top: 10px;
+    }
+
+    .admission-panel.active {
+        display: block;
+    }
+
+    .program-highlights {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(180px, 1fr));
+        gap: 14px;
+        margin: 22px 0 26px;
+    }
+
+    .program-highlight {
+        background: rgba(255, 255, 255, .1);
+        border: 1px solid rgba(255, 255, 255, .12);
+        border-radius: 16px;
+        padding: 16px 18px;
+        color: #fff;
+        font-size: .95rem;
+        line-height: 1.5;
+    }
+
+    .program-highlight strong {
+        display: block;
+        color: #fff;
+        margin-bottom: 6px;
+        font-size: 1rem;
+    }
+
+    .program-summary {
+        color: rgba(255, 255, 255, .85);
+        font-size: .95rem;
+        line-height: 1.8;
+    }
+
+    .program-summary strong {
+        color: #fff;
+    }
+
+    .program-feature {
+        margin-top: 18px;
+        padding: 18px;
+        border-radius: 16px;
+        background: rgba(255, 255, 255, .06);
+        border: 1px solid rgba(255, 255, 255, .1);
+    }
+
+    .program-feature h4 {
+        font-size: 1rem;
+        margin-bottom: 10px;
+        color: #fff;
+    }
+
+    .program-feature p {
+        color: rgba(255, 255, 255, .8);
+        margin: 0;
+        line-height: 1.7;
+    }
+
     /* ── NOTICES ── */
     .notices-sec {
         padding: 100px 20px;
@@ -730,28 +823,82 @@
         margin: auto;
     }
 
-    .gallery-tabs {
-        display: none;
+    .gallery-slider {
+        position: relative;
+        overflow: hidden;
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
     }
 
-    .gallery-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 16px;
+    .gallery-slides {
+        display: flex;
+        transition: transform 0.5s ease;
     }
 
-    .gallery-grid img {
+    .gallery-slide {
+        min-width: 100%;
+        position: relative;
+    }
+
+    .gallery-slide img {
         width: 100%;
-        aspect-ratio: 4/3;
+        height: 500px;
         object-fit: cover;
-        border-radius: 12px;
-        transition: var(--transition);
-        cursor: pointer;
+        display: block;
     }
 
-    .gallery-grid img:hover {
-        transform: scale(1.04);
-        box-shadow: 0 12px 32px rgba(0, 0, 0, .18);
+    .gallery-nav {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(255, 255, 255, 0.9);
+        border: none;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        color: var(--teal);
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .gallery-nav:hover {
+        background: var(--teal);
+        color: white;
+        transform: translateY(-50%) scale(1.1);
+    }
+
+    .gallery-nav.prev {
+        left: 20px;
+    }
+
+    .gallery-nav.next {
+        right: 20px;
+    }
+
+    .gallery-dots {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    .gallery-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: rgba(10, 124, 110, 0.3);
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .gallery-dot.active {
+        background: var(--teal);
+        transform: scale(1.2);
     }
 
     /* ── TERMS ── */
@@ -815,6 +962,71 @@
         font-size: .65rem;
         margin-top: 5px;
         flex-shrink: 0;
+    }
+
+    .rules-tabs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .rules-tab {
+        border: 1px solid var(--border);
+        background: #fff;
+        color: var(--text);
+        padding: 10px 18px;
+        border-radius: 999px;
+        cursor: pointer;
+        transition: var(--transition);
+        font-size: .95rem;
+        white-space: nowrap;
+    }
+
+    .rules-tab:hover,
+    .rules-tab.active {
+        border-color: var(--teal);
+        background: var(--teal);
+        color: #fff;
+    }
+
+    .rules-panel {
+        display: none;
+        color: var(--gray);
+        font-size: .95rem;
+        line-height: 1.8;
+    }
+
+    .rules-panel.active {
+        display: block;
+    }
+
+    .rules-panel ul {
+        margin-top: 10px;
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .rules-panel li {
+        padding: 10px 0;
+        border-bottom: 1px solid var(--border);
+        font-size: .95rem;
+        color: var(--gray);
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+    }
+
+    .rules-panel li:last-child {
+        border-bottom: none;
+    }
+
+    .rules-panel li::before {
+        content: '•';
+        color: var(--teal);
+        margin-top: 6px;
+        font-size: 1rem;
+        line-height: 1;
     }
 
     .leave-pill {
@@ -1026,7 +1238,7 @@
     <div class="hero-bg"></div>
     <div class="hero-content">
         <div class="hero-logo-ring">
-            <img src="/static/images/logo.jpeg" alt="College Logo">
+            <img src="{% static 'images/logo.jpeg' %}" alt="College Logo">
         </div>
         <div class="hero-badge"><i class="fas fa-shield-halved"></i> INC Approved Institution</div>
         <h1>Chandramauli Swaminath<br><em>Nursing &amp; Paramedical College</em></h1>
@@ -1069,7 +1281,7 @@
 <section class="principal-sec">
     <div class="principal-inner">
         <div class="principal-img-wrap">
-            <img src="/static/images/college.jpeg" alt="College">
+            <img src="{% static 'images/college.jpeg' %}" alt="College">
             <div class="accent-box">
                 Est. <strong>2000+</strong>
                 <small>Years of Excellence</small>
@@ -1125,27 +1337,81 @@
 <section class="courses-sec" id="courses">
     <div class="container">
         <div class="section-head">
-            <span class="eyebrow" style="color:var(--gold)!important;background:rgba(201,168,76,.12)!important;">Our
-                Programmes</span>
-            <h2 style="color:#fff;">Courses Designed for <em style="color:var(--gold);">Real Healthcare Careers</em>
-            </h2>
-            <p style="color:rgba(255,255,255,.55);">Choose from our INC-approved nursing &amp; paramedical programmes.
+            <span class="eyebrow"
+                style="color:var(--gold)!important;background:rgba(201,168,76,.12)!important;">Admissions</span>
+            <h2 style="color:#fff;">Nursing Programmes with <em style="color:var(--gold);">Live Intake Details</em></h2>
+            <p style="color:rgba(255,255,255,.55);">Select the right pathway for your nursing career and apply directly.
             </p>
             <div class="divider-line"></div>
         </div>
-        <div class="course-grid">
-            {% for course in courses %}
-            <div class="course-card">
-                <span class="course-tag">Approved</span>
-                <h5>{{ course.name }}</h5>
-                <ul class="course-meta">
-                    <li><i class="fas fa-clock"></i> Duration: {{ course.duration }}</li>
-                    <li><i class="fas fa-users"></i> Seats: {{ course.seats }}</li>
-                    <li><i class="fas fa-indian-rupee-sign"></i> Fees: {{ course.fees }}</li>
-                </ul>
-                <a href="/admission/" class="btn-course">Apply Now</a>
+
+        <div class="admission-tabs">
+            <button type="button" class="admission-tab active" data-target="admission-gnm">G.N.M</button>
+            <button type="button" class="admission-tab" data-target="admission-anm">A.N.M</button>
+        </div>
+
+        <div id="admission-gnm" class="admission-panel active">
+            <div class="program-feature">
+                <h4>G.N.M Programme Snapshot</h4>
+                <p>The General Nursing & Midwifery programme prepares nurses for hospital and community roles with
+                    confidence,
+                    clinical skill and leadership mindset.</p>
             </div>
-            {% endfor %}
+            <div class="program-highlights">
+                <div class="program-highlight">
+                    <strong>Eligibility</strong>
+                    CBSE 12th or UP 12th
+                </div>
+                <div class="program-highlight">
+                    <strong>Duration</strong>
+                    3 Years
+                </div>
+                <div class="program-highlight">
+                    <strong>Intake</strong>
+                    50 seats
+                </div>
+                <div class="program-highlight">
+                    <strong>Fee</strong>
+                    Contact Institution
+                </div>
+            </div>
+            <p class="program-summary">
+                The purpose of the General Nursing programme is to develop compassionate and capable nurses who can
+                function
+                as effective members of the healthcare team, delivering care in hospitals and community settings.
+            </p>
+            <a href="/admission/" class="btn-course">Apply Now</a>
+        </div>
+
+        <div id="admission-anm" class="admission-panel">
+            <div class="program-feature">
+                <h4>A.N.M Programme Snapshot</h4>
+                <p>Auxiliary Nursing Midwifery trains health workers for primary care, maternal support and rural health
+                    services.</p>
+            </div>
+            <div class="program-highlights">
+                <div class="program-highlight">
+                    <strong>Eligibility</strong>
+                    Class 12th / Equivalent
+                </div>
+                <div class="program-highlight">
+                    <strong>Duration</strong>
+                    2 Years
+                </div>
+                <div class="program-highlight">
+                    <strong>Intake</strong>
+                    30 seats
+                </div>
+                <div class="program-highlight">
+                    <strong>Fee</strong>
+                    Contact Institution
+                </div>
+            </div>
+            <p class="program-summary">
+                Students gain practical nursing ability and community health expertise, making them ready for frontline
+                service in rural clinics, schools and public health programmes.
+            </p>
+            <a href="/admission/" class="btn-course">Apply Now</a>
         </div>
     </div>
 </section>
@@ -1160,6 +1426,14 @@
                 <div class="divider-line" style="margin-left:0;"></div>
             </div>
             <div class="notices-list">
+                {% if external_notices %}
+                {% for notice in external_notices %}
+                <div class="notice-item">
+                    <div class="notice-dot"></div>
+                    <a href="{{ notice.url }}" target="_blank" class="notice-title">{{ notice.title }}</a>
+                </div>
+                {% endfor %}
+                {% elif notices %}
                 {% for notice in notices %}
                 <div class="notice-item">
                     <div class="notice-dot"></div>
@@ -1169,6 +1443,12 @@
                     {% endif %}
                 </div>
                 {% endfor %}
+                {% else %}
+                <div class="notice-item">
+                    <div class="notice-dot"></div>
+                    <span class="notice-title">No notices available at the moment.</span>
+                </div>
+                {% endif %}
             </div>
         </div>
         <div class="eligibility-card">
@@ -1206,10 +1486,61 @@
             <h2>College <em>Gallery</em></h2>
             <div class="divider-line"></div>
         </div>
-        <div class="gallery-grid">
-            {% for image in gallery %}
-            <img src="{{ image.image.url }}" alt="Gallery Image">
-            {% endfor %}
+        <div class="gallery-slider">
+            <div class="gallery-slides">
+                <div class="gallery-slide">
+                    <img src="{% static 'images/cmsn01.jpeg' %}" alt="College Campus View 1">
+                </div>
+                <div class="gallery-slide">
+                    <img src="{% static 'images/cmsn02.jpeg' %}" alt="College Campus View 2">
+                </div>
+                <div class="gallery-slide">
+                    <img src="{% static 'images/cmsn03.jpeg' %}" alt="College Campus View 3">
+                </div>
+                <div class="gallery-slide">
+                    <img src="{% static 'images/cmsn04.jpeg' %}" alt="College Campus View 4">
+                </div>
+                <div class="gallery-slide">
+                    <img src="{% static 'images/cmsn05.jpeg' %}" alt="College Campus View 5">
+                </div>
+                <div class="gallery-slide">
+                    <img src="{% static 'images/cmsn06.jpeg' %}" alt="College Campus View 6">
+                </div>
+                <div class="gallery-slide">
+                    <img src="{% static 'images/cmsn07.jpeg' %}" alt="College Campus View 7">
+                </div>
+                <div class="gallery-slide">
+                    <img src="{% static 'images/cmsn08.jpeg' %}" alt="College Campus View 8">
+                </div>
+                <div class="gallery-slide">
+                    <img src="{% static 'images/cmsn09.jpeg' %}" alt="College Campus View 9">
+                </div>
+                <div class="gallery-slide">
+                    <img src="{% static 'images/cmsn10.jpeg' %}" alt="College Campus View 10">
+                </div>
+                <div class="gallery-slide">
+                    <img src="{% static 'images/cmsn11.jpeg' %}" alt="College Campus View 11">
+                </div>
+                <div class="gallery-slide">
+                    <img src="{% static 'images/cmsn12.jpeg' %}" alt="College Campus View 12">
+                </div>
+            </div>
+            <button class="gallery-nav prev" type="button">&#10094;</button>
+            <button class="gallery-nav next" type="button">&#10095;</button>
+        </div>
+        <div class="gallery-dots">
+            <span class="gallery-dot active" data-slide="0"></span>
+            <span class="gallery-dot" data-slide="1"></span>
+            <span class="gallery-dot" data-slide="2"></span>
+            <span class="gallery-dot" data-slide="3"></span>
+            <span class="gallery-dot" data-slide="4"></span>
+            <span class="gallery-dot" data-slide="5"></span>
+            <span class="gallery-dot" data-slide="6"></span>
+            <span class="gallery-dot" data-slide="7"></span>
+            <span class="gallery-dot" data-slide="8"></span>
+            <span class="gallery-dot" data-slide="9"></span>
+            <span class="gallery-dot" data-slide="10"></span>
+            <span class="gallery-dot" data-slide="11"></span>
         </div>
     </div>
 </section>
@@ -1241,14 +1572,81 @@
                 <p style="font-size:.82rem;color:var(--gray);margin-top:12px;"><i class="fas fa-triangle-exclamation"
                         style="color:#e05c5c;margin-right:6px;"></i>Sick leave cannot be accumulated year to year.</p>
             </div>
+            <div class="terms-card">
+                <h4><i class="fas fa-scroll"></i> Examination Results</h4>
+                <p style="color:var(--gray);font-size:.95rem;line-height:1.8;">
+                    For the latest nursing exam results, visit the official UPSMFAC portal:
+                    <a href="https://online.upsmfac.org/Online/Result.aspx" target="_blank"
+                        style="color:var(--teal);font-weight:600;">https://online.upsmfac.org/Online/Result.aspx</a>
+                </p>
+                <p style="color:var(--gray);font-size:.95rem;line-height:1.8;margin-top:0.75rem;">
+                    This link gives you direct access to published results for Diploma and ANM examinations.
+                </p>
+            </div>
             <div class="terms-card" style="grid-column:1/-1;">
                 <h4><i class="fas fa-stethoscope"></i> Training Period</h4>
-                <p style="color:var(--gray);font-size:.95rem;line-height:1.8;">
-                    Diploma in General Nursing &amp; Midwifery duration is <strong>3 Years</strong>. A preliminary
-                    training period of <strong>12 weeks</strong> includes ward observation and supervised practice not
-                    exceeding 16 hours duty per week, followed by full clinical posting across various hospital
-                    departments.
-                </p>
+                <div style="color:var(--gray);font-size:.95rem;line-height:1.8;">
+                    <h5 style="margin-bottom:.7rem;color:var(--text);">GNM Clinical Internship</h5>
+                    <p>
+                        Diploma in General Nursing &amp; Midwifery is a <strong>3-year</strong> programme. Clinical
+                        training begins with a structured <strong>6-month</strong> hospital internship that blends ward
+                        observation, supervised practice and hands-on patient care, keeping duty hours within 16 per
+                        week.
+                    </p>
+                    <ul class="terms-list" style="margin-top:12px;">
+                        <li><strong>CHC Hospital Piparaich, Gorakhpur</strong> — 1 Month</li>
+                        <li><strong>Railway Hospital, Gorakhpur</strong> — 1 Month</li>
+                        <li><strong>District Women Hospital, Gorakhpur</strong> — 4 Months (Primary)</li>
+                    </ul>
+
+                    <h5 style="margin:1.5rem 0 .7rem;color:var(--text);">ANM Clinical Training</h5>
+                    <p>
+                        Auxiliary Nurse Midwifery (ANM) training prepares students for community health centres and
+                        maternal-child care. The programme follows the same professional posting pattern to ensure
+                        experience in primary healthcare, clinical procedures and patient support.
+                    </p>
+                    <ul class="terms-list" style="margin-top:12px;">
+                        <li><strong>CHC Hospital Piparaich, Gorakhpur</strong> — 1 Month</li>
+                        <li><strong>Railway Hospital, Gorakhpur</strong> — 1 Month</li>
+                        <li><strong>District Women Hospital, Gorakhpur</strong> — 4 Months (Primary)</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="terms-card" style="grid-column:1/-1;">
+                <h4><i class="fas fa-book-open"></i> College Rules</h4>
+                <div class="rules-tabs">
+                    <button type="button" class="rules-tab active" data-target="rule-anti">Anti Ragging</button>
+                    <button type="button" class="rules-tab" data-target="rule-student">Student Rules</button>
+                    <button type="button" class="rules-tab" data-target="rule-library">Library Rules</button>
+                </div>
+                <div id="rule-anti" class="rules-panel active">
+                    <p>Ragging is strictly prohibited on campus. Every student must:
+                    <ul>
+                        <li>Respect seniors, peers and staff at all times.</li>
+                        <li>Report any harassment immediately to college authorities.</li>
+                        <li>Understand that violators face suspension, expulsion, and legal action.</li>
+                    </ul>
+                    </p>
+                </div>
+                <div id="rule-student" class="rules-panel">
+                    <p>As a nursing college student, you are expected to maintain high standards of discipline and
+                        professionalism.
+                    <ul>
+                        <li>Attend all lectures, labs and clinical postings on time.</li>
+                        <li>Wear the prescribed uniform and maintain personal hygiene.</li>
+                        <li>Keep mobile phones silent in classrooms and clinical areas.</li>
+                    </ul>
+                    </p>
+                </div>
+                <div id="rule-library" class="rules-panel">
+                    <p>Our library is a place for focused study and academic growth.
+                    <ul>
+                        <li>Maintain silence and avoid unnecessary disturbance.</li>
+                        <li>Handle books and materials carefully; return them on time.</li>
+                        <li>No food, drink or mobile use inside the library.</li>
+                    </ul>
+                    </p>
+                </div>
             </div>
         </div>
     </div>
@@ -1269,4 +1667,96 @@
     <i class="fab fa-whatsapp"></i>
 </a>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const tabs = document.querySelectorAll('.rules-tab');
+        const panels = document.querySelectorAll('.rules-panel');
+
+        tabs.forEach(function (tab) {
+            tab.addEventListener('click', function () {
+                tabs.forEach(function (item) {
+                    item.classList.remove('active');
+                });
+                panels.forEach(function (panel) {
+                    panel.classList.remove('active');
+                });
+
+                this.classList.add('active');
+                const target = document.getElementById(this.dataset.target);
+                if (target) {
+                    target.classList.add('active');
+                }
+            });
+        });
+    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const admissionTabs = document.querySelectorAll('.admission-tab');
+        const admissionPanels = document.querySelectorAll('.admission-panel');
+
+        admissionTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                admissionTabs.forEach(item => item.classList.remove('active'));
+                admissionPanels.forEach(panel => panel.classList.remove('active'));
+
+                tab.classList.add('active');
+                const target = document.getElementById(tab.dataset.target);
+                if (target) {
+                    target.classList.add('active');
+                }
+            });
+        });
+    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const slides = document.querySelector('.gallery-slides');
+        const slideElements = document.querySelectorAll('.gallery-slide');
+        const prevBtn = document.querySelector('.gallery-nav.prev');
+        const nextBtn = document.querySelector('.gallery-nav.next');
+        const dots = document.querySelectorAll('.gallery-dot');
+
+        let currentSlide = 0;
+        const totalSlides = slideElements.length;
+
+        function updateSlide() {
+            slides.style.transform = `translateX(-${currentSlide * 100}%)`;
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentSlide);
+            });
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            updateSlide();
+        }
+
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+            updateSlide();
+        }
+
+        function goToSlide(slideIndex) {
+            currentSlide = slideIndex;
+            updateSlide();
+        }
+
+        // Event listeners
+        nextBtn.addEventListener('click', nextSlide);
+        prevBtn.addEventListener('click', prevSlide);
+
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => goToSlide(index));
+        });
+
+        // Auto slide
+        setInterval(nextSlide, 4000);
+
+        // Initialize
+        updateSlide();
+    });
+</script>
 {% endblock %}

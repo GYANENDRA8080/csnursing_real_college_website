@@ -468,10 +468,9 @@
                         <div class="form-group">
                             <label class="form-label">Course Applied For *</label>
                             <select name="course" class="form-control" required>
-                                <option value="">Select Course</option>
-                                {% for course in courses %}
-                                <option value="{{ course.name }}">{{ course.name }}</option>
-                                {% endfor %}
+                                <option value="">Select course</option>
+                                <option value="GNM">GNM (General Nursing & Midwifery)</option>
+                                <option value="ANM">ANM (Auxiliary Nurse Midwifery)</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -961,11 +960,11 @@
             </div>
             <div class="g3">
                 <div class="field">
-                    <label>Course <span style="color:red;">*</span></label>
-                    <select>
+                    <label>Course Applied For <span style="color:red;">*</span></label>
+                    <select name="course" required>
                         <option value="">Select course</option>
-                        <option>GNM – General Nursing & Midwifery</option>
-                        <option>ANM – Auxiliary Nurse Midwifery</option>
+                        <option value="GNM">GNM (General Nursing & Midwifery)</option>
+                        <option value="ANM">ANM (Auxiliary Nurse Midwifery)</option>
                     </select>
                 </div>
                 <div class="field">
